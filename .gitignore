@@ -1,6 +1,6 @@
 # Environment
 .venv/
-*.env
+.env.local
 
 # Cache
 .cache/
