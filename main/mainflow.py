@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 # Define the LLM configuration
 # Load environment variables from .env file
 load_dotenv()
+load_dotenv(".env.local", override=True)
 
 llm_config = {
     "config_list": [
