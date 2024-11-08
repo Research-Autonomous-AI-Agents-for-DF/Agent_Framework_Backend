@@ -12,9 +12,16 @@ llm_config = {
             "api_key": "Test1",
             "seed": 25,
             "timeout": 300
+        },
+        {
+            "model": "codeQwen-model:latest",
+            "api_key":"test",
+            "base_url": "http://localhost:11434/v1",
+            "seed":25,
         }
     ]
 }
+llm_config2 = {"model": "gemini-1.5-flash","api_key":"AIzaSyBdxdqpBwXfgkCDz0chX1Ell0auD_8fLUs","api_type":"google","seed":25}
 executor = DockerCommandLineCodeExecutor(
     image="resistor52/sleuthkit:latest",  # Execute code using the given docker image name.
     timeout=40,  # Timeout for each code execution in seconds.
@@ -24,7 +31,27 @@ executor = DockerCommandLineCodeExecutor(
 # Create Task Translation Agent
 task_translation_agent = AssistantAgent(
     name="Task_Translation_Agent",
-    system_message="""You are an expert in using the SleuthKit library. You have knowledge of all the shell commands in tsk4. You will break down complex tasks into smaller tasks that use these commands. You dont need to provide the code. Just break down the tasks according to the available commands and give the command for the task. Commands are 
+    system_message="""You are a methodical AI assistant specialized in decomposing complex tasks into smaller, manageable subtasks that can be executed sequentially.
+Your responsibilities include:
+    Task Analysis: For every given prompt, analyze it thoroughly and break it down into the simplest possible steps(subtasks) that can be handled one at a time.
+    Step Sequencing: Ensure that the subtasks are ordered logically, such that each subtask provides the necessary context or data required for the next. Each subtask should be self-contained and clearly described.
+    Input-Output Validation: Make sure each subtask has a clear expected input and output, so that you can verify if a subtask was completed successfully before proceeding to the next.
+    Reevaluation: After receiving the output of a completed subtask, reassess the situation if necessary and refine or adjust the remaining subtasks accordingly.
+    Completion: Once all subtasks are successfully completed, review the final output, and declare the task as finished.
+    If there is a subtask that includes coding, give me that subtask. You don't need to give me the code or what I should use to excecute. I will decide what to use and write the code myself. I will excecute and give you the results. Remember to only give me one subask at a time instead of providing the list of all subtasks. If the task requires an input from a previous task, give me that input as well. Do not provide any other text content outside the template.
+
+Reply 'TASK COMPLETED' when the entire task list is fully broken down and executed.
+""",
+    llm_config=llm_config2,
+)
+
+# Create Coder Agent
+coder_agent = AssistantAgent(
+    name="Coder_Writer_Agent",
+    llm_config=llm_config,
+    code_execution_config=False,
+    human_input_mode="ALWAYS",
+    system_message=r"""Solve tasks using your coding and language skills.Remember these sleuthkit shell commands in tsk4 to solve tasks that involve bash commands.  Commands are 
     blkcalc - Converts between unallocated disk unit numbers and regular disk unit numbers.
     blkcat - Display the contents of file system data unit in a disk image.
     blkls - List or output file system data units.
@@ -55,28 +82,15 @@ task_translation_agent = AssistantAgent(
     tsk_gettimes - Collect MAC times from a disk image into a body file.
     tsk_loaddb - populate a SQLite database with metadata from a disk image.
     tsk_recover - Export files from an image into a local directory.
-""",
-    llm_config=llm_config,
-)
 
-# Create Coder Agent
-coder_agent = AssistantAgent(
-    name="Coder_Writer_Agent",
-    llm_config=llm_config,
-    code_execution_config=False,
-    human_input_mode="ALWAYS",
-    system_message=r"""You are a helpful AI assistant.
-Solve tasks using your coding and language skills.
 In the following cases, suggest python code (in a python coding block) or shell script (in a sh coding block) for the user to execute.
     1. When you need to collect info, use the code to output the info you need, for example, browse or search the web, download/read a file, print the content of a webpage or a file, get the current date/time, check the operating system. After sufficient info is printed and the task is ready to be solved based on your language skill, you can solve the task by yourself.
     2. When you need to perform some task with code, use the code to perform the task and output the result. Finish the task smartly.
-Solve the task step by step if you need to. If a plan is not provided, explain your plan first. Be clear which step uses code, and which step uses your language skill.
 When using code, you must indicate the script type in the code block. The user cannot provide any other feedback or perform any other action beyond executing the code you suggest. The user can't modify your code. So do not suggest incomplete code which requires users to modify. Don't use a code block if it's not intended to be executed by the user.
 If you want the user to save the code in a file before executing it, put # filename: <filename> inside the code block as the first line. Don't include multiple code blocks in one response. Do not ask users to copy and paste the result. Instead, use 'print' function for the output when relevant. Check the execution result returned by the user.
 If the result indicates there is an error, fix the error and output the code again. Suggest the full code instead of partial code or code changes. If the error can't be fixed or if the task is not solved even after the code is executed successfully, analyze the problem, revisit your assumption, collect additional info you need, and think of a different approach to try.
 When you find an answer, verify the answer carefully. Include verifiable evidence in your response if possible.
 Reply "TERMINATE" in the end when everything is done.
-If you are generating a shell script, dont have any blank lines as it gets interpreted as \r in the terminal
 """
 )
 
@@ -135,6 +149,8 @@ def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
                 messages[-1]["content"]:
             print("It works")
             return coder_agent
+        elif "success" in messages[-1]["content"]:
+            return task_translation_agent
         return reporter_agent
 
     elif last_speaker is reporter_agent:
@@ -169,9 +185,9 @@ user_proxy = UserProxyAgent(
 )
 
 user_proxy.initiate_chat(
-    manager, message="Examine the disk image in the dataset folder of the current working directory named "
-                     "'dfr-01-ntfs.dd' using the sleuthkit commands. Use the tsk 4 and tsk 3 command lists and come up "
-                     "with a list of deleted file names. Store them in file named 'deleted_files.txt'."
+    manager, message=r"""Task: Recover a file from the emtied recycle bin.
+    Disk Location: ./TestImages/dfr-01-recycle-ntfs.dd
+    How to Analyze: File system forensics using The Sleuth Kit commandline tools."""
 )
 
 # Continue with the process flow and handle human input as needed
