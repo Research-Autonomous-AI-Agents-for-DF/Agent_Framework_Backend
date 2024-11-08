@@ -2,16 +2,21 @@ import autogen
 from typing import Dict, List
 from autogen import Agent, GroupChat, GroupChatManager, UserProxyAgent, AssistantAgent
 from autogen.coding import DockerCommandLineCodeExecutor
+import os
+from dotenv import load_dotenv
 
 # Define the LLM configuration
+# Load environment variables from .env file
+load_dotenv()
+
 llm_config = {
     "config_list": [
         {
-            "model": "Llama 3.1",
-            "base_url": "http://localhost:1234/v1",
-            "api_key": "Test1",
-            "seed": 25,
-            "timeout": 300
+            "model": os.getenv("LLM_MODEL"),
+            "base_url": os.getenv("LLM_BASE_URL"),
+            "api_key": os.getenv("LLM_API_KEY"),
+            "seed": int(os.getenv("LLM_SEED", 25)),  # Default seed if not set
+            "timeout": int(os.getenv("LLM_TIMEOUT", 300))  # Default timeout if not set
         }
     ]
 }
