@@ -1,15 +1,17 @@
 import autogen
 from typing import Dict, List
 from autogen import Agent, GroupChat, GroupChatManager, UserProxyAgent, AssistantAgent
+from autogen.agentchat.contrib.retrieve_user_proxy_agent import RetrieveUserProxyAgent
 from autogen.coding import DockerCommandLineCodeExecutor
 import os
+import chromadb
 from dotenv import load_dotenv
 
-# Define the LLM configuration
 # Load environment variables from .env file
 load_dotenv()
 load_dotenv("../.env.local", override=True)
 
+# Define the LLM configuration
 llm_config = {
     "config_list": [
         {
@@ -30,42 +32,38 @@ executor = DockerCommandLineCodeExecutor(
 # Create Task Translation Agent
 task_translation_agent = AssistantAgent(
     name="Task_Translation_Agent",
-    system_message="""You are an expert in using the SleuthKit library. You have knowledge of all the shell commands in tsk4. You will break down complex tasks into smaller tasks that use these commands. You dont need to provide the code. Just break down the tasks according to the available commands and give the command for the task. Commands are 
-    blkcalc - Converts between unallocated disk unit numbers and regular disk unit numbers.
-    blkcat - Display the contents of file system data unit in a disk image.
-    blkls - List or output file system data units.
-    blkstat - Display details of a file system data unit (i.e. block or sector).
-    fcat - Output the contents of a file based on its name.
-    ffind - Finds the name of the file or directory using a given inode.
-    fiwalk - print the filesystem statistics and exit.
-    fls - List file and directory names in a disk image.
-    fsstat - Display general details of a file system.
-    hfind - Lookup a hash value in a hash database.
-    icat - Output the contents of a file based on its inode number.
-    ifind - Find the meta-data structure that has allocated a given disk unit or file name.
-    ils - List inode information.
-    img_cat - Output contents of an image file.
-    img_stat - Display details of an image file.
-    istat - Display details of a meta-data structure (i.e. inode).
-    jcat - Show the contents of a block in the file system journal.
-    jls - List the contents of a file system journal.
-    jpeg_extract - jpeg extractor.
-    mactime - Create an ASCII time line of file activity.
-    mmcat - Output the contents of a partition to stdout.
-    mmls - Display the partition layout of a volume system (partition tables).
-    mmstat - Display details about the volume system (partition tables).
-    sigfind - Find a binary signature in a file.
-    sorter - Sort files in an image into categories based on file type.
-    srch_strings - Display printable strings in files.
-    tsk_comparedir - compare the contents of a directory with the contents of an image or local device.
-    tsk_gettimes - Collect MAC times from a disk image into a body file.
-    tsk_loaddb - populate a SQLite database with metadata from a disk image.
-    tsk_recover - Export files from an image into a local directory.
-""",
+    system_message=(
+        "You are an expert in SleuthKit commands. Your goal is to break down the user's task into smaller actionable steps. "
+        "Use the provided context strictly to identify commands relevant to the task and describe how to use them. "
+        "DO NOT summarize the context or provide explanations beyond what is needed to complete the task. "
+        "Break down the task step by step, ensuring each step uses a specific SleuthKit command from the context."
+    ),
     llm_config=llm_config,
 )
 
-# Create Coder Agent
+# RAG Proxy Agent setup for command retrieval
+rag_proxy_agent = RetrieveUserProxyAgent(
+    name="RAG_Proxy_Agent",
+    human_input_mode="NEVER",
+    system_message="Retrieve only the most relevant SleuthKit commands and details for solving the user's task. "
+                   "Provide precise commands and their explanations without additional interpretation.",
+    max_consecutive_auto_reply=3,
+    retrieve_config={
+        "task": "QA",
+        "docs_path": [os.path.join(os.path.abspath(""), "sleuthkit_commands.txt"),
+                      os.path.join(os.path.abspath(""), "sleuthkit_book.pdf")],
+        "custom_text_types": ["txt", "pdf"],
+        "chunk_token_size": 2000,
+        "model": llm_config["config_list"][0]["model"],
+        "client": chromadb.PersistentClient(path="/tmp/chromadb"),
+        "embedding_model": "all-mpnet-base-v2",
+        "get_or_create": True,
+        "must_break_at_empty_line": False,
+    },
+    code_execution_config=False,
+)
+
+# Coder Agent setup
 coder_agent = AssistantAgent(
     name="Coder_Writer_Agent",
     llm_config=llm_config,
@@ -115,22 +113,38 @@ reporter_agent = AssistantAgent(
     Ensure that the report is clear, concise, and free of any technical jargon that might confuse a non-expert reader. Include timestamps and references to specific data sources where applicable. Aim for accuracy, clarity, and thoroughness in every section of the report.
     """,
     llm_config=llm_config,
-
 )
 
 
 # Create a custom speaker selection function
 def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
     messages = groupchat.messages
-
     if len(messages) <= 1:
+        # Extract the 'content' field from the first message
+        first_message_content = messages[0].get('content', '')
+
+        # Retrieve documents
+        rag_proxy_agent.retrieve_docs(problem=first_message_content)
+        retrieved_docs = rag_proxy_agent.results
+        # `retrieved_contents` contains all the extracted 'content' strings from retrivd_docs
+        retrieved_contents = [entry[0]['content'] for entry in retrieved_docs[0]]
+
+        print("retrieved_contents:", retrieved_contents)
+
+        groupchat.messages.append({
+            "content": f"Retrieved Context:\n{retrieved_contents}",
+            "role": "agent",
+            "name": "RAG_Proxy_Agent"
+        })
+        # print('after append the group massage', groupchat.messages)
+
+        # Next speaker: Task Translation Agent
         return task_translation_agent
 
     if last_speaker is task_translation_agent:
         return coder_agent
 
     elif last_speaker is coder_agent:
-        # After Coder Agent, human input is required
         if "Human" in messages[-1]["content"]:
             return "manual"  # Switch to manual mode for human input
         return code_executor_agent
@@ -152,18 +166,13 @@ def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
 
 # Create the GroupChat with agents
 groupchat = GroupChat(
-    agents=[task_translation_agent, coder_agent, code_executor_agent, reporter_agent],
+    agents=[rag_proxy_agent, task_translation_agent, coder_agent, code_executor_agent, reporter_agent],
     messages=[],
     max_round=20,
     speaker_selection_method=custom_speaker_selection_func,
 )
 
 # Initialize GroupChatManager
-
-
-
-
-
 manager = GroupChatManager(groupchat=groupchat, llm_config=llm_config)
 
 # Start the conversation by sending a task to the Task Translation Agent
@@ -179,5 +188,3 @@ user_proxy.initiate_chat(
                      "'dfr-01-ntfs.dd' using the sleuthkit commands. Use the tsk 4 and tsk 3 command lists and come up "
                      "with a list of deleted file names. Store them in file named 'deleted_files.txt'."
 )
-
-# Continue with the process flow and handle human input as needed

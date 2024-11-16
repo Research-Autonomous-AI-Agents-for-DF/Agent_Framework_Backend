@@ -11,7 +11,9 @@ __pycache__/
 .idea/
 
 # Logs and Output files
-*.log
+*.logs
 
 # Temporary files
 coding/
+
+tmp/

@@ -1,0 +1,189 @@
+blkcalc - Converts between unallocated disk unit numbers and regular disk unit numbers.
+blkcat - Display the contents of file system data unit in a disk image.
+blkls - List or output file system data units.
+blkstat - Display details of a file system data unit (i.e. block or sector).
+fcat - Output the contents of a file based on its name.
+ffind - Finds the name of the file or directory using a given inode.
+fiwalk - print the filesystem statistics and exit.
+fls - List file and directory names in a disk image.
+fsstat - Display general details of a file system.
+hfind - Lookup a hash value in a hash database.
+icat - Output the contents of a file based on its inode number.
+ifind - Find the meta-data structure that has allocated a given disk unit or file name.
+ils - List inode information.
+img_cat - Output contents of an image file.
+img_stat - Display details of an image file.
+istat - Display details of a meta-data structure (i.e. inode).
+jcat - Show the contents of a block in the file system journal.
+jls - List the contents of a file system journal.
+jpeg_extract - jpeg extractor.
+mactime - Create an ASCII time line of file activity.
+mmcat - Output the contents of a partition to stdout.
+mmls - Display the partition layout of a volume system (partition tables).
+mmstat - Display details about the volume system (partition tables).
+sigfind - Find a binary signature in a file.
+sorter - Sort files in an image into categories based on file type.
+srch_strings - Display printable strings in files.
+tsk_comparedir - compare the contents of a directory with the contents of an image or local device.
+tsk_gettimes - Collect MAC times from a disk image into a body file.
+tsk_loaddb - populate a SQLite database with metadata from a disk image.
+tsk_recover - Export files from an image into a local directory
+abc-Examine the disk image in the dataset folder of the current working directory and gives list of deleted file names
+ping - Send ICMP ECHO_REQUEST packets to network hosts
+traceroute - Display the route and transit delay of packets across an IP network
+curl - Transfer data to or from a server using various protocols
+1. fsstat
+Description:
+
+Displays detailed information about the file system metadata, including the layout, allocation strategies, and metadata structures.
+Outputs critical details such as the number of metadata entries (e.g., inodes), block size, volume name, and file system type (e.g., NTFS, FAT32, EXT).
+Usage: fsstat <image_file> -o <offset>
+Forensic Significance:
+Use during the initial investigation to understand the file system properties.
+Helps determine file system boundaries, such as where metadata structures (e.g., MFT for NTFS) are located.
+2. istat
+Description:
+
+Retrieves detailed metadata information about a specific file or directory, including timestamps (MAC times), permissions, and allocated disk blocks.
+Usage: istat <image_file> <inode_number> -o <offset>
+Forensic Significance:
+Essential for timeline analysis to identify file access, modification, or creation times.
+Helps reconstruct user activity and understand data allocation.
+3. fls
+Description:
+
+Lists the files and directories in a file system, including deleted files.
+Usage: fls <image_file> -o <offset> [-rd]
+Forensic Significance:
+Helps map the directory structure of the image, making it easier to navigate and locate files of interest.
+The -r flag allows recursive listing, and -d includes deleted files in the output.
+4. blkls
+Description:
+
+Extracts unallocated blocks from the file system for analysis.
+Usage: blkls <image_file> -o <offset>
+Forensic Significance:
+Used to recover deleted or fragmented files by analyzing unallocated space.
+Carve evidence, such as images or documents, from unallocated clusters.
+5. icat
+Description:
+
+Extracts and outputs the raw content of a file based on its inode.
+Usage: icat <image_file> <inode_number> -o <offset>
+Forensic Significance:
+Recovers file content, even for deleted files, provided the inode metadata is still intact.
+6. mmls
+Description:
+
+Lists partition information for a disk image, including the type, start, and end sectors of each partition.
+Usage: mmls <image_file>
+Forensic Significance:
+Essential for identifying partitions in a disk image, including hidden or unmounted partitions.
+Helps locate offsets for partition analysis with other SleuthKit commands.
+7. mmcat
+Description:
+
+Extracts raw data from a specific partition.
+Usage: mmcat <image_file> <partition_number>
+Forensic Significance:
+Allows analysts to create raw dumps of specific partitions for targeted analysis.
+8. srch_strings
+Description:
+
+Searches for readable ASCII and Unicode strings in binary files or disk images.
+Usage: srch_strings <image_file>
+Forensic Significance:
+Useful for finding keywords, URLs, or other strings in unstructured data.
+Assists in keyword-based searches for investigative leads.
+9. tsk_recover
+Description:
+
+Recovers deleted files from a file system and saves them to a specified directory.
+Usage: tsk_recover <image_file> <output_directory> -o <offset>
+Forensic Significance:
+Automates the recovery of deleted files from file systems, useful in cases of data deletion.
+10. blkcat
+Description:
+
+Outputs the raw content of a specific block.
+Usage: blkcat <image_file> <block_number> -o <offset>
+Forensic Significance:
+Used for manual inspection of block-level data to identify remnants of files or metadata.
+11. hfind
+Description:
+
+Searches for a hash in a hash database (e.g., NSRL).
+Usage: hfind <hash_db> <hash>
+Forensic Significance:
+Used to check whether a file hash matches known hash values in a forensic database.
+Helps identify known good or bad files.
+12. sorter
+Description:
+
+Sorts files in a file system by their types, based on extensions or content.
+Usage: sorter <image_file> -o <offset>
+Forensic Significance:
+Helps organize files into categories for faster identification and prioritization of evidence.
+13. sigfind
+Description:
+
+Searches for specific file signatures in a disk image, such as headers or magic numbers.
+Usage: sigfind <signature_file> <image_file>
+Forensic Significance:
+Used for file carving or identifying file fragments based on known signatures.
+14. dls
+Description:
+
+Outputs the content of deleted files or file fragments from unallocated space.
+Usage: dls <image_file> -o <offset>
+Forensic Significance:
+Facilitates recovery of deleted files by scanning unallocated clusters.
+15. img_stat
+Description:
+
+Provides detailed information about the image file, such as its size, format, and sectors.
+Usage: img_stat <image_file>
+Forensic Significance:
+Used to validate and document the properties of an acquired image.
+16. ffind
+Description:
+
+Finds the file name or path associated with a specific inode.
+Usage: ffind <image_file> -o <offset> <inode_number>
+Forensic Significance:
+Maps metadata (inode) to a file path, enabling identification of deleted or obscured files.
+17. fsstat
+Description:
+
+Displays the layout and allocation statistics of the file system.
+Usage: fsstat <image_file> -o <offset>
+Forensic Significance:
+Offers a high-level view of file system properties to assist in strategy formulation for analysis.
+18. volume_stat
+Description:
+
+Provides information about a volume, including its size and layout.
+Usage: volume_stat <image_file>
+Forensic Significance:
+Helps locate the boundaries of logical volumes in an image.
+19. jcat
+Description:
+
+Extracts and outputs journal contents from file systems that use journaling, such as EXT3/EXT4.
+Usage: jcat <image_file> -o <offset>
+Forensic Significance:
+Helps recover data or actions recorded in the file system journal, useful for incident reconstruction.
+20. jstat
+Description:
+
+Displays information about the journal of a journaling file system.
+Usage: jstat <image_file> -o <offset>
+Forensic Significance:
+Useful for understanding journaling behavior and locating journal entries of interest.
+21. mkdmgr
+Description:
+
+Manages and processes metadata structures for forensic images.
+Usage: mkdmgr <image_file>
+Forensic Significance:
+Automates metadata processing for scalability in large-scale investigations.
