@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 # Define the LLM configuration
 # Load environment variables from .env file
 load_dotenv()
-load_dotenv("../.env.local", override=True)
+load_dotenv("./.env.local", override=True)
 
 llm_config = {
     "config_list": [
@@ -21,8 +21,15 @@ llm_config = {
         }
     ]
 }
+llm_coder_config= {
+    "model": os.getenv("LLM_MODEL_2"),
+    "base_url": os.getenv("LLM_BASE_URL_2"),
+    "api_key": os.getenv("LLM_API_KEY"),
+    "seed": int(os.getenv("LLM_SEED", 25)),  # Default seed if not set
+    "timeout": int(os.getenv("LLM_TIMEOUT", 300))  # Default timeout if not set
+}
 executor = DockerCommandLineCodeExecutor(
-    image="resistor52/sleuthkit:latest",  # Execute code using the given docker image name.
+    image="tsk_python:latest",  # Execute code using the given docker image name.
     timeout=40,  # Timeout for each code execution in seconds.
     work_dir="coding",  # Use the temporary directory to store the code files.
 )
@@ -30,22 +37,8 @@ executor = DockerCommandLineCodeExecutor(
 # Create Task Translation Agent
 task_translation_agent = AssistantAgent(
     name="Task_Translation_Agent",
-    system_message="""You are an expert in using the SleuthKit library. You are knowledgeable about SleuthKit 
-    commands and can reason through complex forensic tasks.
-    
-    Use the following structure to solve tasks:
-    
-    1. **Thought**: Analyze the task and determine the best SleuthKit commands or sequence to solve it.
-    2. **Action**: Select the appropriate command(s) to use and justify your choice.
-    3. **Observation**: After performing the action, analyze the results. If further action is needed, continue with the next step.
-    
-    Example:
-    
-    Task: "Identify deleted files in a disk image."
-    Thought: "To find deleted files, I should use `fls` to list files, including deleted entries."
-    Action: "I will run `fls -d /path/to/image` to list deleted files."
-    Observation: "After listing, I will check if any recovered file names match the case requirements."
-    . Commands are:
+    system_message="""You are a methodical AI assistant specialized in solving file system forensics tasks. Solve the following tasks as best as you can. You can give tasks that require code excecution to an agent(TSKAgent) who will give you the output of that task.
+    The TSKAgent has the following file system forensic capabilities and can also run general terminal commands:
     blkcalc - Converts between unallocated disk unit numbers and regular disk unit numbers.
     blkcat - Display the contents of file system data unit in a disk image.
     blkls - List or output file system data units.
@@ -76,6 +69,18 @@ task_translation_agent = AssistantAgent(
     tsk_gettimes - Collect MAC times from a disk image into a body file.
     tsk_loaddb - populate a SQLite database with metadata from a disk image.
     tsk_recover - Export files from an image into a local directory.
+    
+    Use the following structure to solve tasks:
+    
+    **Task**: The main task that is given to you to solve with an answer.
+    
+    1. **Thought**: You should always think about what to do
+    2. **Action**: Invoke the TSKAgent(Format: "To TSKAgent: **The Task**")
+    3. **Action Input**: The input to the action
+    4. **Observation**: the result of the action will be given to you in your next prompt. Reflect on it.
+        ... (this process can repeat multiple times. you will give me the above three and i will respond for them in your next prompt for which you will do the **Observation** and the next interation.)
+    *Thought*: I now know the final answer
+    *Final Answer*: the final answer to the original input task
 """,
     llm_config=llm_config,
 )
@@ -83,37 +88,49 @@ task_translation_agent = AssistantAgent(
 # Create Coder Agent
 coder_agent = AssistantAgent(
     name="Coder_Writer_Agent",
-    llm_config=llm_config,
+    llm_config=llm_coder_config,
     code_execution_config=False,
     human_input_mode="ALWAYS",
-    system_message=r"""You are a helpful AI assistant.
-Solve tasks using your coding and language skills.
+    system_message=r"""Solve tasks using your coding and language skills. Remember these sleuthkit shell commands in tsk4 to solve tasks that involve bash commands.  Commands are 
+    blkcalc - Converts between unallocated disk unit numbers and regular disk unit numbers.
+    blkcat - Display the contents of file system data unit in a disk image.
+    blkls - List or output file system data units.
+    blkstat - Display details of a file system data unit (i.e. block or sector).
+    fcat - Output the contents of a file based on its name.
+    ffind - Finds the name of the file or directory using a given inode.
+    fiwalk - print the filesystem statistics and exit.
+    fls - List file and directory names in a disk image.
+    fsstat - Display general details of a file system.
+    hfind - Lookup a hash value in a hash database.
+    icat - Output the contents of a file based on its inode number.
+    ifind - Find the meta-data structure that has allocated a given disk unit or file name.
+    ils - List inode information.
+    img_cat - Output contents of an image file.
+    img_stat - Display details of an image file.
+    istat - Display details of a meta-data structure (i.e. inode).
+    jcat - Show the contents of a block in the file system journal.
+    jls - List the contents of a file system journal.
+    jpeg_extract - jpeg extractor.
+    mactime - Create an ASCII time line of file activity.
+    mmcat - Output the contents of a partition to stdout.
+    mmls - Display the partition layout of a volume system (partition tables).
+    mmstat - Display details about the volume system (partition tables).
+    sigfind - Find a binary signature in a file.
+    sorter - Sort files in an image into categories based on file type.
+    srch_strings - Display printable strings in files.
+    tsk_comparedir - compare the contents of a directory with the contents of an image or local device.
+    tsk_gettimes - Collect MAC times from a disk image into a body file.
+    tsk_loaddb - populate a SQLite database with metadata from a disk image.
+    tsk_recover - Export files from an image into a local directory.
+
 In the following cases, suggest python code (in a python coding block) or shell script (in a sh coding block) for the user to execute.
     1. When you need to collect info, use the code to output the info you need, for example, browse or search the web, download/read a file, print the content of a webpage or a file, get the current date/time, check the operating system. After sufficient info is printed and the task is ready to be solved based on your language skill, you can solve the task by yourself.
     2. When you need to perform some task with code, use the code to perform the task and output the result. Finish the task smartly.
-Solve the task step by step if you need to. If a plan is not provided, explain your plan first. Be clear which step uses code, and which step uses your language skill.
 When using code, you must indicate the script type in the code block. The user cannot provide any other feedback or perform any other action beyond executing the code you suggest. The user can't modify your code. So do not suggest incomplete code which requires users to modify. Don't use a code block if it's not intended to be executed by the user.
 If you want the user to save the code in a file before executing it, put # filename: <filename> inside the code block as the first line. Don't include multiple code blocks in one response. Do not ask users to copy and paste the result. Instead, use 'print' function for the output when relevant. Check the execution result returned by the user.
 If the result indicates there is an error, fix the error and output the code again. Suggest the full code instead of partial code or code changes. If the error can't be fixed or if the task is not solved even after the code is executed successfully, analyze the problem, revisit your assumption, collect additional info you need, and think of a different approach to try.
 When you find an answer, verify the answer carefully. Include verifiable evidence in your response if possible.
 Reply "TERMINATE" in the end when everything is done.
-If you are generating a shell script, dont have any blank lines as it gets interpreted as \r in the terminal
- 
-    For each task:
-    - **Thought**: Break down the coding task into logical steps, considering dependencies and requirements.
-    - **Action**: Write the code, explaining your approach to ensure clarity.
-    - **Observation**: If code execution reveals any issues, analyze and iterate.
-    
-    Example:
-    
-    Task: "Extract and save deleted file names to a text file."
-    Thought: "I need to list deleted files using `fls`, then write the output to a file."
-    Action:
-    ```sh
-    # filename: deleted_files_extractor.sh
-    fls -d /path/to/image > deleted_files.txt
-    ```
-    Observation: "Check the output file to confirm all deleted files are listed."
     """,
 )
 
@@ -158,7 +175,15 @@ def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
         return task_translation_agent
 
     if last_speaker is task_translation_agent:
-        return coder_agent
+        if "To TSKAgent" in messages[-1]["content"]:
+            # extract what comes after To TSKAgent:
+            tsk_agent_task = messages[-1]["content"].split("To TSKAgent:")[1].strip()
+            # set the content of the message to the task
+            messages[-1]["content"] = tsk_agent_task
+            return coder_agent
+        elif "Final Answer" in messages[-1]["content"]:
+            return reporter_agent
+        return user_proxy
 
     elif last_speaker is coder_agent:
         # After Coder Agent, human input is required
@@ -170,9 +195,8 @@ def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
 
         if "execution failed" in messages[-1]["content"] or "failed" in messages[-1]["content"] or "change" in \
                 messages[-1]["content"]:
-            print("It works")
             return coder_agent
-        return reporter_agent
+        return task_translation_agent
 
     elif last_speaker is reporter_agent:
         return "manual"  # End the chat, switch to manual for final review
@@ -180,10 +204,16 @@ def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
     else:
         return "random"  # Default fallback
 
+user_proxy = UserProxyAgent(
+    name="Admin",
+    system_message="A human admin. Review the outputs from the agents.",
+    code_execution_config=False,
+
+)
 
 # Create the GroupChat with agents
 groupchat = GroupChat(
-    agents=[task_translation_agent, coder_agent, code_executor_agent, reporter_agent],
+    agents=[task_translation_agent, coder_agent, code_executor_agent, reporter_agent, user_proxy],
     messages=[],
     max_round=20,
     speaker_selection_method=custom_speaker_selection_func,
@@ -198,17 +228,10 @@ groupchat = GroupChat(
 manager = GroupChatManager(groupchat=groupchat, llm_config=llm_config)
 
 # Start the conversation by sending a task to the Task Translation Agent
-user_proxy = UserProxyAgent(
-    name="Admin",
-    system_message="A human admin. Review the outputs from the agents.",
-    code_execution_config=False,
-
-)
 
 user_proxy.initiate_chat(
-    manager, message="Examine the disk image in the dataset folder of the current working directory named "
-                     "'dfr-01-ntfs.dd' using the sleuthkit commands. Use the tsk 4 and tsk 3 command lists and come up "
-                     "with a list of deleted file names. Store them in file named 'deleted_files.txt'."
+    manager, message="""Task: Do a file system analysis of a disk image.
+    Disk Image: ./dataset/dfr-01-recycle-ntfs.dd"""
 )
 
 # Continue with the process flow and handle human input as needed
