@@ -32,12 +32,30 @@ executor = DockerCommandLineCodeExecutor(
 # Create Task Translation Agent
 task_translation_agent = AssistantAgent(
     name="Task_Translation_Agent",
-    system_message=(
-        "You are an expert in SleuthKit commands. Your goal is to break down the user's task into smaller actionable steps. "
+    system_message="""
+    You are an expert in SleuthKit commands. Your goal is to break down the user's task into smaller actionable steps. "
         "Use the provided context strictly to identify commands relevant to the task and describe how to use them. "
         "DO NOT summarize the context or provide explanations beyond what is needed to complete the task. "
-        "Break down the task step by step, ensuring each step uses a specific SleuthKit command from the context."
-    ),
+        "Break down the task step by step, ensuring each step uses a specific SleuthKit command from the context.
+    
+    
+    You are an expert in using the SleuthKit library. You are knowledgeable about SleuthKit 
+    commands and can reason through complex forensic tasks.
+    
+    Use the following structure to solve tasks:
+    
+    1. **Thought**: Analyze the task and determine the best SleuthKit commands or sequence to solve it.
+    2. **Action**: Select the appropriate command(s) to use and justify your choice.
+    3. **Observation**: After performing the action, analyze the results. If further action is needed, continue with the next step.
+    
+    Example:
+    
+    Task: "Identify deleted files in a disk image."
+    Thought: "To find deleted files, I should use `fls` to list files, including deleted entries."
+    Action: "I will run `fls -d /path/to/image` to list deleted files."
+    Observation: "After listing, I will check if any recovered file names match the case requirements."
+    .
+""",
     llm_config=llm_config,
 )
 
@@ -81,7 +99,23 @@ If the result indicates there is an error, fix the error and output the code aga
 When you find an answer, verify the answer carefully. Include verifiable evidence in your response if possible.
 Reply "TERMINATE" in the end when everything is done.
 If you are generating a shell script, dont have any blank lines as it gets interpreted as \r in the terminal
-"""
+ 
+    For each task:
+    - **Thought**: Break down the coding task into logical steps, considering dependencies and requirements.
+    - **Action**: Write the code, explaining your approach to ensure clarity.
+    - **Observation**: If code execution reveals any issues, analyze and iterate.
+    
+    Example:
+    
+    Task: "Extract and save deleted file names to a text file."
+    Thought: "I need to list deleted files using `fls`, then write the output to a file."
+    Action:
+    ```sh
+    # filename: deleted_files_extractor.sh
+    fls -d /path/to/image > deleted_files.txt
+    ```
+    Observation: "Check the output file to confirm all deleted files are listed."
+    """,
 )
 
 # Create Code Executor Agent
@@ -145,6 +179,7 @@ def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
         return coder_agent
 
     elif last_speaker is coder_agent:
+        # After Coder Agent, human input is required
         if "Human" in messages[-1]["content"]:
             return "manual"  # Switch to manual mode for human input
         return code_executor_agent
