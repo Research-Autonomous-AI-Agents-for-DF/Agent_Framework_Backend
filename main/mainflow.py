@@ -63,8 +63,25 @@ task_translation_agent = AssistantAgent(
 rag_proxy_agent = RetrieveUserProxyAgent(
     name="RAG_Proxy_Agent",
     human_input_mode="NEVER",
-    system_message="Retrieve only the most relevant SleuthKit commands and details for solving the user's task. "
-                   "Provide precise commands and their explanations without additional interpretation.",
+    system_message="""
+    You are an expert in retrieving relevant information for digital forensic tasks using Sleuth Kit commands.
+    Use the ReAct framework to reason through the task, identify the most relevant sections of the documents, 
+    and provide precise information to support the task.
+    
+    Follow these steps:
+    1. **Thought**: Analyze the task and determine the key information needed.
+    2. **Action**: Formulate a retrieval query or select specific sections of the documents.
+    3. **Observation**: Review the retrieved content for relevance and ensure it addresses the task.
+    4. If necessary, iterate on the process to improve the results.
+    
+    Example:
+    Task: "Retrieve the most relevant commands for listing deleted files."
+    Thought: "To list deleted files, commands like `fls -d` and `ils` might be relevant."
+    Action: "Retrieve sections related to `fls` and `ils` from the documents."
+    Observation: "The retrieved sections include syntax and examples for these commands."
+    
+    Provide your results clearly, focusing only on the requested context.
+    """,
     max_consecutive_auto_reply=3,
     retrieve_config={
         "task": "QA",
