@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 # Define the LLM configuration
 # Load environment variables from .env file
 load_dotenv()
-load_dotenv("../.env.local", override=True)
+load_dotenv("./.env.local", override=True)
 
 llm_config = {
     "config_list": [
@@ -26,6 +26,7 @@ executor = DockerCommandLineCodeExecutor(
     timeout=40,  # Timeout for each code execution in seconds.
     work_dir="coding",  # Use the temporary directory to store the code files.
 )
+
 
 # Create Task Translation Agent
 task_translation_agent = AssistantAgent(
@@ -93,7 +94,6 @@ code_executor_agent = UserProxyAgent(
     default_auto_reply=
     "Please continue. If everything is done, reply 'TERMINATE'.",
 )
-
 # Create Reporter Agent
 reporter_agent = AssistantAgent(
     name="Reporter_Agent",
@@ -124,8 +124,10 @@ def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
     messages = groupchat.messages
 
     if len(messages) <= 1:
+        image_info_agent._default_auto_reply = getImageInfo(last_speaker)
+        return image_info_agent
+    if last_speaker is image_info_agent:
         return task_translation_agent
-
     if last_speaker is task_translation_agent:
         return coder_agent
 
@@ -149,22 +151,43 @@ def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
     else:
         return "random"  # Default fallback
 
+image_info_agent= UserProxyAgent(
+    name="Image_Info_Agent",
+    code_execution_config=False,
+    human_input_mode="NEVER",
+)
 
 # Create the GroupChat with agents
 groupchat = GroupChat(
-    agents=[task_translation_agent, coder_agent, code_executor_agent, reporter_agent],
+    agents=[task_translation_agent, coder_agent, code_executor_agent, reporter_agent, image_info_agent],
     messages=[],
     max_round=20,
     speaker_selection_method=custom_speaker_selection_func,
 )
 
 # Initialize GroupChatManager
-
-
-
-
-
 manager = GroupChatManager(groupchat=groupchat, llm_config=llm_config)
+
+#comman functions
+def getImageInfo(lastSpeaker):
+    if lastSpeaker is user_proxy:
+        messageFromUser = user_proxy.last_message()["content"]
+        fileLocation = messageFromUser.split(":", 1)[1].strip().split(" ", 1)[0]
+        codeMessage = f"""```sh
+                        mmls {fileLocation}
+                        ```"""
+        output = f"Promt: '{messageFromUser}'\nImage Info: '{getCodeOutput(codeMessage)}'"
+        return output
+    return
+def getCommandInfo(commandName):
+    codeMessage = f"""```sh
+                    {commandName}
+                    ```"""
+    return getCodeOutput(codeMessage).split(":", 1)[1].split(" ", 1)[1].strip()
+def getCodeOutput(codeMessage):
+    code_blocks = executor.code_extractor.extract_code_blocks(message=codeMessage)
+    code_output = executor.execute_code_blocks(code_blocks=code_blocks)
+    return code_output.output
 
 # Start the conversation by sending a task to the Task Translation Agent
 user_proxy = UserProxyAgent(
@@ -176,8 +199,9 @@ user_proxy = UserProxyAgent(
 
 user_proxy.initiate_chat(
     manager, message="Examine the disk image in the dataset folder of the current working directory named "
-                     "'dfr-01-ntfs.dd' using the sleuthkit commands. Use the tsk 4 and tsk 3 command lists and come up "
+                     "'dfr-01-ntfs.dd' using the sleuthkit command line tools. Use the tsk command line tools and come up "
                      "with a list of deleted file names. Store them in file named 'deleted_files.txt'."
+                     "image_location: dataset/dfr-01-recycle-ntfs.dd "
 )
 
 # Continue with the process flow and handle human input as needed
