@@ -207,7 +207,7 @@ def getImageInfo(lastSpeaker):
         codeMessage = f"""```sh
                         mmls {fileLocation}
                         ```"""
-        output = f"Promt: '{messageFromUser}'\nImage Info: '{getCodeOutput(codeMessage)}'"
+        output = f"Promt: **{messageFromUser}**\nImage Info: **{getCodeOutput(codeMessage)}**"
         return output
     return
 def getCommandInfo(commandName):
@@ -230,7 +230,7 @@ user_proxy = UserProxyAgent(
 
 user_proxy.initiate_chat(
     manager, message="Examine the disk image in the dataset folder of the current working directory named "
-                     "'dfr-01-ntfs.dd' using the sleuthkit command line tools. Use the tsk command line tools and come up "
+                     "'dfr-01-recycle-ntfs.dd' using the sleuthkit command line tools. Use the tsk command line tools and come up "
                      "with a list of deleted file names. Store them in file named 'deleted_files.txt'."
                      "image_location: dataset/dfr-01-recycle-ntfs.dd "
 )
