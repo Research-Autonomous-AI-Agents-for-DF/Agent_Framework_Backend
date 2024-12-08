@@ -31,7 +31,22 @@ executor = DockerCommandLineCodeExecutor(
 # Create Task Translation Agent
 task_translation_agent = AssistantAgent(
     name="Task_Translation_Agent",
-    system_message="""You are an expert in using the SleuthKit library. You have knowledge of all the shell commands in tsk4. You will break down complex tasks into smaller tasks that use these commands. You dont need to provide the code. Just break down the tasks according to the available commands and give the command for the task. Commands are 
+    system_message="""You are an expert in using the SleuthKit library. You are knowledgeable about SleuthKit 
+    commands and can reason through complex forensic tasks.
+    
+    Use the following structure to solve tasks:
+    
+    1. **Thought**: Analyze the task and determine the best SleuthKit commands or sequence to solve it.
+    2. **Action**: Select the appropriate command(s) to use and justify your choice.
+    3. **Observation**: After performing the action, analyze the results. If further action is needed, continue with the next step.
+    
+    Example:
+    
+    Task: "Identify deleted files in a disk image."
+    Thought: "To find deleted files, I should use `fls` to list files, including deleted entries."
+    Action: "I will run `fls -d /path/to/image` to list deleted files."
+    Observation: "After listing, I will check if any recovered file names match the case requirements."
+    . Commands are:
     blkcalc - Converts between unallocated disk unit numbers and regular disk unit numbers.
     blkcat - Display the contents of file system data unit in a disk image.
     blkls - List or output file system data units.
@@ -84,7 +99,23 @@ If the result indicates there is an error, fix the error and output the code aga
 When you find an answer, verify the answer carefully. Include verifiable evidence in your response if possible.
 Reply "TERMINATE" in the end when everything is done.
 If you are generating a shell script, dont have any blank lines as it gets interpreted as \r in the terminal
-"""
+ 
+    For each task:
+    - **Thought**: Break down the coding task into logical steps, considering dependencies and requirements.
+    - **Action**: Write the code, explaining your approach to ensure clarity.
+    - **Observation**: If code execution reveals any issues, analyze and iterate.
+    
+    Example:
+    
+    Task: "Extract and save deleted file names to a text file."
+    Thought: "I need to list deleted files using `fls`, then write the output to a file."
+    Action:
+    ```sh
+    # filename: deleted_files_extractor.sh
+    fls -d /path/to/image > deleted_files.txt
+    ```
+    Observation: "Check the output file to confirm all deleted files are listed."
+    """,
 )
 
 # Create Code Executor Agent
