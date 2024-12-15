@@ -30,37 +30,43 @@ executor = DockerCommandLineCodeExecutor(
 # Create Task Translation Agent
 task_translation_agent = AssistantAgent(
     name="Task_Translation_Agent",
-    system_message="""You are an expert in using the SleuthKit library. You have knowledge of all the shell commands in tsk4. You will break down complex tasks into smaller tasks that use these commands. You dont need to provide the code. Just break down the tasks according to the available commands and give the command for the task. Commands are 
-    blkcalc - Converts between unallocated disk unit numbers and regular disk unit numbers.
-    blkcat - Display the contents of file system data unit in a disk image.
-    blkls - List or output file system data units.
-    blkstat - Display details of a file system data unit (i.e. block or sector).
-    fcat - Output the contents of a file based on its name.
-    ffind - Finds the name of the file or directory using a given inode.
-    fiwalk - print the filesystem statistics and exit.
-    fls - List file and directory names in a disk image.
-    fsstat - Display general details of a file system.
-    hfind - Lookup a hash value in a hash database.
-    icat - Output the contents of a file based on its inode number.
-    ifind - Find the meta-data structure that has allocated a given disk unit or file name.
-    ils - List inode information.
-    img_cat - Output contents of an image file.
-    img_stat - Display details of an image file.
-    istat - Display details of a meta-data structure (i.e. inode).
-    jcat - Show the contents of a block in the file system journal.
-    jls - List the contents of a file system journal.
-    jpeg_extract - jpeg extractor.
-    mactime - Create an ASCII time line of file activity.
-    mmcat - Output the contents of a partition to stdout.
-    mmls - Display the partition layout of a volume system (partition tables).
-    mmstat - Display details about the volume system (partition tables).
-    sigfind - Find a binary signature in a file.
-    sorter - Sort files in an image into categories based on file type.
-    srch_strings - Display printable strings in files.
-    tsk_comparedir - compare the contents of a directory with the contents of an image or local device.
-    tsk_gettimes - Collect MAC times from a disk image into a body file.
-    tsk_loaddb - populate a SQLite database with metadata from a disk image.
-    tsk_recover - Export files from an image into a local directory.
+    system_message="""You are an expert in SleuthKit commands. For each task, break it into smaller actionable 
+    subtasks.Output only one subtask at a time using the provided command list:
+
+Commands are:
+- blkcalc: Converts between unallocated disk unit numbers and regular disk unit numbers.
+- blkcat: Display the contents of a file system data unit in a disk image.
+- blkls: List or output file system data units.
+- blkstat: Display details of a file system data unit (i.e., block or sector).
+- fcat: Output the contents of a file based on its name.
+- ffind: Finds the name of the file or directory using a given inode.
+- fiwalk: Print the filesystem statistics and exit.
+- fls: List file and directory names in a disk image.
+- fsstat: Display general details of a file system.
+- hfind: Lookup a hash value in a hash database.
+- icat: Output the contents of a file based on its inode number.
+- ifind: Find the meta-data structure that has allocated a given disk unit or file name.
+- ils: List inode information.
+- img_cat: Output contents of an image file.
+- img_stat: Display details of an image file.
+- istat: Display details of a meta-data structure (i.e., inode).
+- jcat: Show the contents of a block in the file system journal.
+- jls: List the contents of a file system journal.
+- jpeg_extract: JPEG extractor.
+- mactime: Create an ASCII timeline of file activity.
+- mmcat: Output the contents of a partition to stdout.
+- mmls: Display the partition layout of a volume system (partition tables).
+- mmstat: Display details about the volume system (partition tables).
+- sigfind: Find a binary signature in a file.
+- sorter: Sort files in an image into categories based on file type.
+- srch_strings: Display printable strings in files.
+- tsk_comparedir: Compare the contents of a directory with the contents of an image or local device.
+- tsk_gettimes: Collect MAC times from a disk image into a body file.
+- tsk_loaddb: Populate a SQLite database with metadata from a disk image.
+- tsk_recover: Export files from an image into a local directory.
+
+**Output only the one Step at a time.
+
 """,
     llm_config=llm_config,
 )
@@ -127,34 +133,36 @@ def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
         return task_translation_agent
 
     if last_speaker is task_translation_agent:
+        # Generate one task at a time, then pass to Coder Agent
         return coder_agent
 
     elif last_speaker is coder_agent:
-        # After Coder Agent, human input is required
-        if "Human" in messages[-1]["content"]:
-            return "manual"  # Switch to manual mode for human input
+        # After Coder Agent, pass the task to Code Executor Agent
         return code_executor_agent
 
     elif last_speaker is code_executor_agent:
+        # Check if execution was successful or failed
+        if "execution failed" in messages[-1]["content"] or "failed" in messages[-1]["content"] or "change" in messages[-1]["content"] or "Error" in messages[-1]["content"]:
+            return coder_agent  # Retry with the Coder Agent if failed
 
-        if "execution failed" in messages[-1]["content"] or "failed" in messages[-1]["content"] or "change" in \
-                messages[-1]["content"]:
-            print("It works")
-            return coder_agent
-        return reporter_agent
+        # If successful, go back to Task Translation Agent for the next task
+        if "execution successful" in messages[-1]["content"] or "success" in messages[-1]["content"] or "succeed" in messages[-1]["content"]:
+            return task_translation_agent
 
     elif last_speaker is reporter_agent:
-        return "manual"  # End the chat, switch to manual for final review
+        # Once all tasks are completed, switch to manual mode for final review
+        return "manual"
 
     else:
-        return "random"  # Default fallback
+        # Default fallback
+        return "random"
 
 
 # Create the GroupChat with agents
 groupchat = GroupChat(
     agents=[task_translation_agent, coder_agent, code_executor_agent, reporter_agent],
     messages=[],
-    max_round=20,
+    max_round=40,
     speaker_selection_method=custom_speaker_selection_func,
 )
 
@@ -175,7 +183,7 @@ user_proxy = UserProxyAgent(
 )
 
 user_proxy.initiate_chat(
-    manager, message="Examine the disk image in the dataset folder of the current working directory named "
+    manager, message="Examine the disk image in the of the current working directory named "
                      "'dfr-01-ntfs.dd' using the sleuthkit commands. Use the tsk 4 and tsk 3 command lists and come up "
                      "with a list of deleted file names. Store them in file named 'deleted_files.txt'."
 )
