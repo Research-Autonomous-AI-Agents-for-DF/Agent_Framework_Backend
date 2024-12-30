@@ -266,7 +266,7 @@ user_proxy.initiate_chat(
                      "'dfr-01-recycle-ntfs.dd'"
                      " using the sleuthkit command line tools. Use the tsk command line tools and come up "
                      "with a list of deleted file names. Store them in file named 'deleted_files.txt'."
-                     "image_location: dataset/dfr-01-recycle-ntfs.dd "
+                     "image_location: ./test_image.dd "
 )
 
 # Continue with the process flow and handle human input as needed
