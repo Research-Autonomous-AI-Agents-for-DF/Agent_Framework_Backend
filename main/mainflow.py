@@ -33,7 +33,7 @@ executor = DockerCommandLineCodeExecutor(
 # Create Task Translation Agent
 task_translation_agent = AssistantAgent(
     name="Task_Translation_Agent",
-    system_message="""You are an expert in using the SleuthKit library. You are knowledgeable about SleuthKit command line tools and can reason through complex forensic tasks. You are systematic. Seeking results from the user and rethinking.
+    system_message="""You are an expert in using the SleuthKit commandline tools. You are knowledgeable about SleuthKit command line tools and can reason through complex forensic tasks. You are systematic. Seeking results from the user and rethinking.
     
     Use the following structure to solve tasks:
     
@@ -44,14 +44,6 @@ task_translation_agent = AssistantAgent(
     Important:
     1. Wait for me to give the results or wait for the executed results of the function call for observation.
     2. Continue if you think the result is correct. If the result is invalid or unexpected, please correct your Thought and Action.
-
-    
-    Example:
-    
-    Task: "Identify deleted files in a disk image."
-    Thought: "To find deleted files, I should use `fls` to list files, including deleted entries."
-    Action: "I will run `fls -d /path/to/image` to list deleted files."
-    Observation: "After listing, I will check if any recovered file names match the case requirements."
     
     The Sleuth Kit  Commandline Tools are:
     blkcalc - Converts between unallocated disk unit numbers and regular disk unit numbers.
@@ -86,6 +78,8 @@ task_translation_agent = AssistantAgent(
     tsk_recover - Export files from an image into a local directory.
     
     Call get_tool_documentation(tool_name) to get the documentation for a tool.
+    
+    **Output only the one Step at a time.
 """,
     llm_config=llm_config,
 )
@@ -183,27 +177,29 @@ def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
     if last_speaker is image_info_agent:
         return task_translation_agent
     if last_speaker is task_translation_agent:
+        # Generate one task at a time, then pass to Coder Agent
         return coder_agent
 
     elif last_speaker is coder_agent:
-        # After Coder Agent, human input is required
-        if "Human" in messages[-1]["content"]:
-            return "manual"  # Switch to manual mode for human input
+        # After Coder Agent, pass the task to Code Executor Agent
         return code_executor_agent
 
     elif last_speaker is code_executor_agent:
+        # Check if execution was successful or failed
+        if "execution failed" in messages[-1]["content"] or "failed" in messages[-1]["content"] or "change" in messages[-1]["content"] or "Error" in messages[-1]["content"]:
+            return coder_agent  # Retry with the Coder Agent if failed
 
-        if "execution failed" in messages[-1]["content"] or "failed" in messages[-1]["content"] or "change" in \
-                messages[-1]["content"]:
-            print("It works")
-            return coder_agent
-        return reporter_agent
+        # If successful, go back to Task Translation Agent for the next task
+        if "execution successful" in messages[-1]["content"] or "success" in messages[-1]["content"] or "succeed" in messages[-1]["content"]:
+            return task_translation_agent
 
     elif last_speaker is reporter_agent:
-        return "manual"  # End the chat, switch to manual for final review
+        # Once all tasks are completed, switch to manual mode for final review
+        return "manual"
 
     else:
-        return "random"  # Default fallback
+        # Default fallback
+        return "random"
 
 image_info_agent= UserProxyAgent(
     name="Image_Info_Agent",
@@ -215,7 +211,7 @@ image_info_agent= UserProxyAgent(
 groupchat = GroupChat(
     agents=[task_translation_agent, coder_agent, code_executor_agent, reporter_agent, image_info_agent, user_proxy],
     messages=[],
-    max_round=20,
+    max_round=40,
     speaker_selection_method=custom_speaker_selection_func,
 )
 
@@ -263,7 +259,7 @@ register_function(
 # Start the conversation by sending a task to the Task Translation Agent
 user_proxy.initiate_chat(
     manager, message="Examine the disk image in the dataset folder of the current working directory named "
-                     "'dfr-01-recycle-ntfs.dd'"
+                     "'test_image.dd'"
                      " using the sleuthkit command line tools. Use the tsk command line tools and come up "
                      "with a list of deleted file names. Store them in file named 'deleted_files.txt'."
                      "image_location: ./test_image.dd "
