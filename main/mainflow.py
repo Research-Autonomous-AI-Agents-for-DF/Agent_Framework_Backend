@@ -1,9 +1,12 @@
-import autogen
-from typing import Dict, List
-from autogen import Agent, GroupChat, GroupChatManager, UserProxyAgent, AssistantAgent
-from autogen.coding import DockerCommandLineCodeExecutor
 import os
+
+from typing import Dict, List
+from autogen import Agent, GroupChat, GroupChatManager, UserProxyAgent, AssistantAgent, register_function
+from autogen.coding import DockerCommandLineCodeExecutor
 from dotenv import load_dotenv
+from typing_extensions import Annotated
+from functions import get_tool_documentation
+
 
 # Define the LLM configuration
 # Load environment variables from .env file
@@ -16,7 +19,6 @@ llm_config = {
             "model": os.getenv("LLM_MODEL"),
             "base_url": os.getenv("LLM_BASE_URL"),
             "api_key": os.getenv("LLM_API_KEY"),
-            "seed": int(os.getenv("LLM_SEED", 25)),  # Default seed if not set
             "timeout": int(os.getenv("LLM_TIMEOUT", 300))  # Default timeout if not set
         }
     ]
@@ -27,17 +29,22 @@ executor = DockerCommandLineCodeExecutor(
     work_dir="coding",  # Use the temporary directory to store the code files.
 )
 
+
 # Create Task Translation Agent
 task_translation_agent = AssistantAgent(
     name="Task_Translation_Agent",
-    system_message="""You are an expert in using the SleuthKit library. You are knowledgeable about SleuthKit 
-    commands and can reason through complex forensic tasks.
+    system_message="""You are an expert in using the SleuthKit library. You are knowledgeable about SleuthKit command line tools and can reason through complex forensic tasks. You are systematic. Seeking results from the user and rethinking.
     
     Use the following structure to solve tasks:
     
-    1. **Thought**: Analyze the task and determine the best SleuthKit commands or sequence to solve it.
-    2. **Action**: Select the appropriate command(s) to use and justify your choice.
+    1. **Thought**: Analyze the task and determine the best SleuthKit command line tool or sequence to solve it.
+    2. **Action**: Select the appropriate command line tool(s) to use and justify your choice.
     3. **Observation**: After performing the action, analyze the results. If further action is needed, continue with the next step.
+    
+    Important:
+    1. Wait for me to give the results or wait for the executed results of the function call for observation.
+    2. Continue if you think the result is correct. If the result is invalid or unexpected, please correct your Thought and Action.
+
     
     Example:
     
@@ -45,7 +52,8 @@ task_translation_agent = AssistantAgent(
     Thought: "To find deleted files, I should use `fls` to list files, including deleted entries."
     Action: "I will run `fls -d /path/to/image` to list deleted files."
     Observation: "After listing, I will check if any recovered file names match the case requirements."
-    . Commands are:
+    
+    The Sleuth Kit  Commandline Tools are:
     blkcalc - Converts between unallocated disk unit numbers and regular disk unit numbers.
     blkcat - Display the contents of file system data unit in a disk image.
     blkls - List or output file system data units.
@@ -76,6 +84,8 @@ task_translation_agent = AssistantAgent(
     tsk_gettimes - Collect MAC times from a disk image into a body file.
     tsk_loaddb - populate a SQLite database with metadata from a disk image.
     tsk_recover - Export files from an image into a local directory.
+    
+    Call get_tool_documentation(tool_name) to get the documentation for a tool.
 """,
     llm_config=llm_config,
 )
@@ -124,7 +134,6 @@ code_executor_agent = UserProxyAgent(
     default_auto_reply=
     "Please continue. If everything is done, reply 'TERMINATE'.",
 )
-
 # Create Reporter Agent
 reporter_agent = AssistantAgent(
     name="Reporter_Agent",
@@ -149,14 +158,30 @@ reporter_agent = AssistantAgent(
 
 )
 
+# Admin
+user_proxy = UserProxyAgent(
+    name="Admin",
+    system_message="A human admin. Review the outputs from the agents.",
+    code_execution_config=False,
+
+)
+
 
 # Create a custom speaker selection function
 def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
     messages = groupchat.messages
 
     if len(messages) <= 1:
+        image_info_agent._default_auto_reply = getImageInfo(last_speaker)
+        return image_info_agent
+    #direct all function calls to user_proxy
+    if messages[-1].get("tool_calls") is not None:
+        return user_proxy
+    #direct all function results to task_translation_agent
+    if messages[-1].get("role") == "tool":
         return task_translation_agent
-
+    if last_speaker is image_info_agent:
+        return task_translation_agent
     if last_speaker is task_translation_agent:
         return coder_agent
 
@@ -180,35 +205,68 @@ def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
     else:
         return "random"  # Default fallback
 
+image_info_agent= UserProxyAgent(
+    name="Image_Info_Agent",
+    code_execution_config=False,
+    human_input_mode="NEVER",
+)
 
 # Create the GroupChat with agents
 groupchat = GroupChat(
-    agents=[task_translation_agent, coder_agent, code_executor_agent, reporter_agent],
+    agents=[task_translation_agent, coder_agent, code_executor_agent, reporter_agent, image_info_agent, user_proxy],
     messages=[],
     max_round=20,
     speaker_selection_method=custom_speaker_selection_func,
 )
 
 # Initialize GroupChatManager
-
-
-
-
-
 manager = GroupChatManager(groupchat=groupchat, llm_config=llm_config)
 
-# Start the conversation by sending a task to the Task Translation Agent
-user_proxy = UserProxyAgent(
-    name="Admin",
-    system_message="A human admin. Review the outputs from the agents.",
-    code_execution_config=False,
+#comman functions
+def getImageInfo(lastSpeaker):
+    if lastSpeaker is user_proxy:
+        messageFromUser = user_proxy.last_message()["content"]
+        fileLocation = messageFromUser.split(":", 1)[1].strip().split(" ", 1)[0]
+        codeMessage = f"""```sh
+                        mmls {fileLocation}
+                        ```"""
+        output = f"Promt: '{messageFromUser}'\nImage Info: '{getCodeOutput(codeMessage)}'"
+        return output
+    return
+# @user_proxy.register_for_execution()
+# @task_translation_agent.register_for_llm(description="Used to get the template for the particular SleuthKit command line tool")
+# def get_tool_template(commandName:Annotated[str, "Command Line Tool Name"]) -> str:
+#     codeMessage = f"""```sh
+#                     {commandName}
+#                     ```"""
+#     return getCodeOutput(codeMessage).split(":", 1)[1].split(" ", 1)[1].strip()
+def getCodeOutput(codeMessage):
+    code_blocks = executor.code_extractor.extract_code_blocks(message=codeMessage)
+    code_output = executor.execute_code_blocks(code_blocks=code_blocks)
+    return code_output.output
 
+register_function(
+    get_tool_documentation,
+    caller=task_translation_agent,
+    executor=user_proxy,
+    name="get_tool_documentation",
+    description="Get the documentation for the Sleuth kit command line tool",
 )
+# register_function(
+#     get_tool_template,
+#     caller=task_translation_agent,
+#     executor=coder_agent,
+#     name="get_tool_template",
+#     description="Used to get the template for the particular SleuthKit command line tool",
+# )
 
+# Start the conversation by sending a task to the Task Translation Agent
 user_proxy.initiate_chat(
     manager, message="Examine the disk image in the dataset folder of the current working directory named "
-                     "'dfr-01-ntfs.dd' using the sleuthkit commands. Use the tsk 4 and tsk 3 command lists and come up "
+                     "'dfr-01-recycle-ntfs.dd'"
+                     " using the sleuthkit command line tools. Use the tsk command line tools and come up "
                      "with a list of deleted file names. Store them in file named 'deleted_files.txt'."
+                     "image_location: dataset/dfr-01-recycle-ntfs.dd "
 )
 
 # Continue with the process flow and handle human input as needed
