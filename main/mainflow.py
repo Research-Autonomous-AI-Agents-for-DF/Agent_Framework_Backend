@@ -161,23 +161,23 @@ groupchat = GroupChat(
 # Initialize GroupChatManager
 
 
-
-
-
 manager = GroupChatManager(groupchat=groupchat, llm_config=llm_config)
 
+
 # Start the conversation by sending a task to the Task Translation Agent
-user_proxy = UserProxyAgent(
-    name="Admin",
-    system_message="A human admin. Review the outputs from the agents.",
-    code_execution_config=False,
+# Function to start forensic analysis
+def start_forensic_analysis():
+    user_proxy = UserProxyAgent(
+        name="Admin",
+        system_message="A human admin. Review the outputs from the agents.",
+        code_execution_config=False,
+    )
 
-)
-
-user_proxy.initiate_chat(
-    manager, message="Examine the disk image in the dataset folder of the current working directory named "
-                     "'dfr-01-ntfs.dd' using the sleuthkit commands. Use the tsk 4 and tsk 3 command lists and come up "
-                     "with a list of deleted file names. Store them in file named 'deleted_files.txt'."
-)
+    user_proxy.initiate_chat(
+        manager, message="Examine the disk image in the dataset folder of the current working directory named "
+                         "'dfr-01-ntfs.dd' using the sleuthkit commands. Use the tsk 4 and tsk 3 command lists and "
+                         "come up with a list of deleted file names. Store them in file named 'deleted_files.txt'."
+    )
+    return groupchat.messages
 
 # Continue with the process flow and handle human input as needed
