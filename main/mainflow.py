@@ -3,16 +3,18 @@ import os
 from typing import Dict, List
 from autogen import Agent, GroupChat, GroupChatManager, UserProxyAgent, AssistantAgent, register_function
 from autogen.coding import DockerCommandLineCodeExecutor
+from autogen.agentchat.contrib.retrieve_user_proxy_agent import RetrieveUserProxyAgent
+import chromadb
 from dotenv import load_dotenv
 from typing_extensions import Annotated
 from functions import get_tool_documentation
 
 
-# Define the LLM configuration
 # Load environment variables from .env file
 load_dotenv()
 load_dotenv("../.env.local", override=True)
 
+# Define the LLM configuration
 llm_config = {
     "config_list": [
         {
@@ -33,58 +35,38 @@ executor = DockerCommandLineCodeExecutor(
 # Create Task Translation Agent
 task_translation_agent = AssistantAgent(
     name="Task_Translation_Agent",
-    system_message="""You are an expert in using the SleuthKit commandline tools. You are knowledgeable about SleuthKit command line tools and can reason through complex forensic tasks. You are systematic. Seeking results from the user and rethinking.
-    
-    Use the following structure to solve tasks:
-    
-    1. **Thought**: Analyze the task and determine the best SleuthKit command line tool or sequence to solve it.
-    2. **Action**: Select the appropriate command line tool(s) to use and justify your choice.
-    3. **Observation**: After performing the action, analyze the results. If further action is needed, continue with the next step.
-    
-    Important:
-    1. Wait for me to give the results or wait for the executed results of the function call for observation.
-    2. Continue if you think the result is correct. If the result is invalid or unexpected, please correct your Thought and Action.
-    
-    The Sleuth Kit  Commandline Tools are:
-    blkcalc - Converts between unallocated disk unit numbers and regular disk unit numbers.
-    blkcat - Display the contents of file system data unit in a disk image.
-    blkls - List or output file system data units.
-    blkstat - Display details of a file system data unit (i.e. block or sector).
-    fcat - Output the contents of a file based on its name.
-    ffind - Finds the name of the file or directory using a given inode.
-    fiwalk - print the filesystem statistics and exit.
-    fls - List file and directory names in a disk image.
-    fsstat - Display general details of a file system.
-    hfind - Lookup a hash value in a hash database.
-    icat - Output the contents of a file based on its inode number.
-    ifind - Find the meta-data structure that has allocated a given disk unit or file name.
-    ils - List inode information.
-    img_cat - Output contents of an image file.
-    img_stat - Display details of an image file.
-    istat - Display details of a meta-data structure (i.e. inode).
-    jcat - Show the contents of a block in the file system journal.
-    jls - List the contents of a file system journal.
-    jpeg_extract - jpeg extractor.
-    mactime - Create an ASCII time line of file activity.
-    mmcat - Output the contents of a partition to stdout.
-    mmls - Display the partition layout of a volume system (partition tables).
-    mmstat - Display details about the volume system (partition tables).
-    sigfind - Find a binary signature in a file.
-    sorter - Sort files in an image into categories based on file type.
-    srch_strings - Display printable strings in files.
-    tsk_comparedir - compare the contents of a directory with the contents of an image or local device.
-    tsk_gettimes - Collect MAC times from a disk image into a body file.
-    tsk_loaddb - populate a SQLite database with metadata from a disk image.
-    tsk_recover - Export files from an image into a local directory.
-    
-    Call get_tool_documentation(tool_name) to get the documentation for a tool.
-    
-    **Output only the one Step at a time.
-""",
+    system_message=(
+        "You are an expert in SleuthKit commands. Your goal is to break down the user's task into smaller actionable steps. "
+        "Use the provided context strictly to identify commands relevant to the task and describe how to use them. "
+        "DO NOT summarize the context or provide explanations beyond what is needed to complete the task. "
+        "Break down the task step by step, ensuring each step uses a specific SleuthKit command from the context."
+    ),
     llm_config=llm_config,
 )
 
-# Create Coder Agent
+# RAG Proxy Agent setup for command retrieval
+rag_proxy_agent = RetrieveUserProxyAgent(
+    name="RAG_Proxy_Agent",
+    human_input_mode="NEVER",
+    system_message="Retrieve only the most relevant SleuthKit commands and details for solving the user's task. "
+                   "Provide precise commands and their explanations without additional interpretation.",
+    max_consecutive_auto_reply=3,
+    retrieve_config={
+        "task": "QA",
+        "docs_path": [os.path.join(os.path.abspath(""), "sleuthkit_commands.txt"),
+                      os.path.join(os.path.abspath(""), "sleuthkit_book.pdf")],
+        "custom_text_types": ["txt", "pdf"],
+        "chunk_token_size": 2000,
+        "model": llm_config["config_list"][0]["model"],
+        "client": chromadb.PersistentClient(path="/tmp/chromadb"),
+        "embedding_model": "all-mpnet-base-v2",
+        "get_or_create": True,
+        "must_break_at_empty_line": False,
+    },
+    code_execution_config=False,
+)
+
+# Coder Agent setup
 coder_agent = AssistantAgent(
     name="Coder_Writer_Agent",
     llm_config=llm_config,
@@ -149,7 +131,6 @@ reporter_agent = AssistantAgent(
     Ensure that the report is clear, concise, and free of any technical jargon that might confuse a non-expert reader. Include timestamps and references to specific data sources where applicable. Aim for accuracy, clarity, and thoroughness in every section of the report.
     """,
     llm_config=llm_config,
-
 )
 
 # Admin
@@ -175,6 +156,25 @@ def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
     if messages[-1].get("role") == "tool":
         return task_translation_agent
     if last_speaker is image_info_agent:
+        # Extract the 'content' field from the first message
+        first_message_content = messages[0].get('content', '')
+
+        # Retrieve documents
+        rag_proxy_agent.retrieve_docs(problem=first_message_content)
+        retrieved_docs = rag_proxy_agent.results
+        # `retrieved_contents` contains all the extracted 'content' strings from retrivd_docs
+        retrieved_contents = [entry[0]['content'] for entry in retrieved_docs[0]]
+
+        print("retrieved_contents:", retrieved_contents)
+
+        groupchat.messages.append({
+            "content": f"Retrieved Context:\n{retrieved_contents}",
+            "role": "agent",
+            "name": "RAG_Proxy_Agent"
+        })
+        # print('after append the group massage', groupchat.messages)
+
+        # Next speaker: Task Translation Agent
         return task_translation_agent
     if last_speaker is task_translation_agent:
         # Generate one task at a time, then pass to Coder Agent
@@ -209,7 +209,7 @@ image_info_agent= UserProxyAgent(
 
 # Create the GroupChat with agents
 groupchat = GroupChat(
-    agents=[task_translation_agent, coder_agent, code_executor_agent, reporter_agent, image_info_agent, user_proxy],
+    agents=[rag_proxy_agent,task_translation_agent, coder_agent, code_executor_agent, reporter_agent, image_info_agent, user_proxy],
     messages=[],
     max_round=40,
     speaker_selection_method=custom_speaker_selection_func,
@@ -264,5 +264,3 @@ user_proxy.initiate_chat(
                      "with a list of deleted file names. Store them in file named 'deleted_files.txt'."
                      "image_location: ./test_image.dd "
 )
-
-# Continue with the process flow and handle human input as needed
