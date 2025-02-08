@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-js"><head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="UTF-8">
+	<title>TSK Tool Overview - SleuthKitWiki</title>
+</head>
+
+<body>
+	<div id="globalWrapper">
+		<div id="column-content">
+			<div id="content" class="mw-body-primary" role="main">
+				<a id="top"></a>
+
+				<h1 id="firstHeading" class="firstHeading" lang="en"><span dir="auto">TSK Tool Overview</span></h1>
+				<div id="bodyContent" class="mw-body">
+					<!-- start content -->
+					<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr">
+						<p>This
+							page provides an overview of the command line tools in TSK. The TSK
+							tools are organized into layers and this page is organized based on
+							those layers. In general, the following tools take a disk or file
+							system image as input.
+						</p>
+						<h1><span class="mw-headline" id="File_System_Tools">File System Tools</span></h1>
+						<h2><span class="mw-headline" id="Fully_Automated_Tools">Fully Automated Tools</span></h2>
+						<p>These tools integrate the volume and file system functionality.
+							Instead of analyzing only a single file system, these tools take a disk
+							image as input and identify the volumes and process the contents.
+						</p>
+						<ul>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Tsk_comparedir" title="Tsk comparedir">tsk_comparedir</a>: Compares a local directory hierarchy with
+								the contents of raw device (or disk image). This can be used to detect rootkits.
+							</li>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Tsk_gettimes" title="Tsk gettimes">tsk_gettimes</a>: Extracts all of the temporal data from the
+								image to make a <a href="http://wiki.sleuthkit.org/index.php?title=Timeline" title="Timeline" class="mw-redirect">timeline</a>. Equivalent to running <a href="http://wiki.sleuthkit.org/index.php?title=Fls" title="Fls">fls</a> with the
+								'-m' option.
+							</li>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Tsk_loaddb" title="Tsk loaddb">tsk_loaddb</a>:
+								Loads the metadata from an image into a SQLite database. This allows
+								other tools to be easily written in a variety of languages and give them
+								access to the image contents.
+							</li>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Tsk_recover" title="Tsk recover">tsk_recover</a>: Extracts the unallocated (or allocated) files
+								from a disk image to a local directory.
+							</li>
+						</ul>
+						<p><br>
+						</p>
+						<h2><span class="mw-headline" id="File_System_Layer_Tools">File System Layer Tools</span></h2>
+						<p>These file system tools process general file system data, such as the layout, allocation
+							structures, and boot blocks
+						</p>
+						<ul>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Fsstat" title="Fsstat">fsstat</a>:
+								Shows file system details and statistics including layout, sizes, and labels.
+							</li>
+						</ul>
+						<h2><span class="mw-headline" id="File_Name_Layer_Tools">File Name Layer Tools</span></h2>
+						<p>These file system tools process the file name structures, which are typically located in the
+							parent directory.
+						</p>
+						<ul>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Ffind" title="Ffind">ffind</a>:
+								Finds allocated and unallocated file names that point to a given meta data structure.
+							</li>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Fls" title="Fls">fls</a>: Lists
+								allocated and deleted file names in a directory.
+							</li>
+						</ul>
+						<h2><span class="mw-headline" id="Meta_Data_Layer_Tools">Meta Data Layer Tools</span></h2>
+						<p>These file system tools process the meta data structures, which store
+							the details about a file. Examples of this structure include directory
+							entries in FAT, MFT entries in NTFS, and inodes in ExtX and UFS.
+						</p>
+						<ul>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Icat" title="Icat">icat</a>:
+								Extracts the data units of a file, which is specified by its meta data address (instead
+								of the file name).
+							</li>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Ifind" title="Ifind">ifind</a>:
+								Finds the meta data structure that has a given file name pointing to it
+								or the meta data structure that points to a given data unit.
+							</li>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Ils" title="Ils">ils</a>: Lists the
+								meta data structures and their contents in a pipe delimited format.
+							</li>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Istat" title="Istat">istat</a>:
+								Displays the statistics and details about a given meta data structure in an easy to read
+								format.
+							</li>
+						</ul>
+						<h2><span class="mw-headline" id="Data_Unit_Layer_Tools">Data Unit Layer Tools</span></h2>
+						<p>These file system tools process the <a href="http://wiki.sleuthkit.org/index.php?title=Data_unit" title="Data unit">data
+								units</a>
+							where file content is stored. Examples of this layer include clusters
+							in FAT and NTFS and blocks and fragments in ExtX and UFS.
+						</p>
+						<ul>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Blkcat" title="Blkcat">blkcat</a>:
+								Extracts the contents of a given data unit.
+							</li>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Blkls" title="Blkls">blkls</a>:
+								Lists the details about data units and can extract the unallocated space of the file
+								system.
+							</li>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Blkstat" title="Blkstat">blkstat</a>: Displays the statistics about a given data unit in an
+								easy to read format.
+							</li>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Blkcalc" title="Blkcalc">blkcalc</a>: Calculates where data in the unallocated space image
+								(from <a href="http://wiki.sleuthkit.org/index.php?title=Blkls" title="Blkls">blkls</a>)
+								exists in the original image. This is used when evidence is found in unallocated space.
+							</li>
+						</ul>
+						<h2><span class="mw-headline" id="File_System_Journal_Tools">File System Journal Tools</span>
+						</h2>
+						<p>These file system tools process the journal that some file systems
+							have. The journal records the metadata (and sometimes content) updates
+							that are made. This could help recover recently deleted data. Examples
+							of file systems with journals include Ext3 and NTFS.
+						</p>
+						<ul>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Jcat" title="Jcat">jcat</a>: Display
+								the contents of a specific journal block.
+							</li>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Jls" title="Jls">jls</a>: List the
+								entries in the file system journal.
+							</li>
+						</ul>
+						<h1><span class="mw-headline" id="Volume_System_Tools">Volume System Tools</span></h1>
+						<p>These tools take a disk (or other media) image as input and analyze
+							its partition structures. Examples include DOS partitions, BSD disk
+							labels, and the Sun Volume Table of Contents (VTOC). These
+							can be used find hidden data between partitions and to identify the file
+							system offset for The Sleuth Kit tools. The media management tools
+							support DOS partitions, BSD disk labels, Sun VTOC, and Mac
+							partitions.
+						</p>
+						<ul>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Mmls" title="Mmls">mmls</a>:
+								Displays the layout of a disk, including the unallocated spaces.
+							</li>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Mmstat" title="Mmstat">mmstat</a>:
+								Display details about a volume system (typically only the type).
+							</li>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Mmcat" title="Mmcat">mmcat</a>:
+								Extracts the contents of a specific volume to STDOUT.
+							</li>
+						</ul>
+						<h1><span class="mw-headline" id="Image_File_Tools">Image File Tools</span></h1>
+						<p>This layer contains tools for the image file format. For example, if
+							the image format is a split image or a compressed image.
+						</p>
+						<ul>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Img_stat" title="Img stat">img_stat</a>: tool will show the details of the image format
+							</li>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Img_cat" title="Img cat">img_cat</a>: This tool will show the raw contents of an image file.
+							</li>
+						</ul>
+						<h1><span class="mw-headline" id="Disk_Tools">Disk Tools</span></h1>
+						<p>These tools can be used to detect and remove a Host Protected Area
+							(HPA) in an ATA disk. A HPA could be used to hide data so that it would
+							not be copied during an acquisition. These tools are currently
+							Linux-only.
+						</p>
+						<ul>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Disk_sreset" title="Disk sreset">disk_sreset</a>: This tool will temporarily remove a HPA if one
+								exists. After the disk is reset, the HPA will return.
+							</li>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Disk_stat" title="Disk stat">disk_stat</a>: This tool will show if an HPA exists.
+							</li>
+						</ul>
+						<h1><span class="mw-headline" id="Other_Tools">Other Tools</span></h1>
+						<ul>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Hfind" title="Hfind">hfind</a>: Uses
+								a binary sort algorithm to lookup hashes in the NIST NSRL, Hashkeeper, and custom hash
+								databases created by md5sum.
+							</li>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Mactime" title="Mactime">mactime</a>: Takes input from the <a href="http://wiki.sleuthkit.org/index.php?title=Fls" title="Fls">fls</a> and <a href="http://wiki.sleuthkit.org/index.php?title=Ils" title="Ils">ils</a> tools to
+								create a <a href="http://wiki.sleuthkit.org/index.php?title=Timeline" title="Timeline" class="mw-redirect">timeline</a> of file activity.
+							</li>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Sorter" title="Sorter">sorter</a>:
+								Sorts files based on their file type and performs extension checking and hash database
+								lookups.
+							</li>
+							<li> <a href="http://wiki.sleuthkit.org/index.php?title=Sigfind" title="Sigfind">sigfind</a>: Searches for a binary value at a given offset. Useful
+								for recovering lost data structures.
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</body></html>
