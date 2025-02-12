@@ -1,14 +1,16 @@
+import asyncio
 import os
 import chromadb
 import chainlit as cl
 
-from autogen import Agent, GroupChat, GroupChatManager, UserProxyAgent, AssistantAgent, register_function, ConversableAgent
+from autogen import Agent, GroupChat, GroupChatManager, UserProxyAgent, AssistantAgent, register_function, \
+    ConversableAgent
 from autogen.coding import DockerCommandLineCodeExecutor
 from dotenv import load_dotenv
 from functions import get_tool_documentation, ask_human_expert
 from autogen.agentchat.contrib.capabilities import transform_messages, transforms
-from chainlit_classes import ChainlitAssistantAgent, ChainlitRagProxyAgent, ChainlitUserProxyAgent, ChainlitGroupChat, ChainlitGroupChatManager
-
+from chainlit_classes import ChainlitAssistantAgent, ChainlitRagProxyAgent, ChainlitUserProxyAgent, ChainlitGroupChat, \
+    ChainlitGroupChatManager
 
 # Load environment variables from .env file
 load_dotenv()
@@ -17,8 +19,29 @@ load_dotenv("./.env.local", override=True)
 TASK = """Examine the deleted files in the disk image using the sleuthkit command line tools. Come up with the list of files, the partition they are located and assign a priority to each.
 image_location: ./dataset/test_image.dd"""
 
+
 @cl.on_chat_start
 async def on_chat_start():
+    await cl.Message(
+        content="### 🌟 Welcome to the AI Agent Framework! \n\n"
+                "This tool allows you to interact with AI-driven agents to perform various tasks."
+    ).send()
+
+    action = await cl.AskActionMessage(
+        content="Click the button below to start.",
+        actions=[
+            cl.Action(name="start_chat", payload={"value": "start_chat"}, label="🚀 Start Chat")
+        ]
+    ).send()
+
+    if action.get("name") == "start_chat":
+        await cl.Message(content=f"🔄 Starting agents on task: {TASK}...").send()
+
+        # Se,perate process to start agents to avoid blocking the main process
+        asyncio.create_task(start_agents())
+
+
+async def start_agents():
     await cl.Message(content=f"Starting agents on task: {TASK}...").send()
     config_list = []
 
@@ -48,11 +71,11 @@ async def on_chat_start():
             DO NOT summarize the context or provide explanations beyond what is needed to complete the task.
             Break down the task step by step, ensuring each step uses a specific SleuthKit command from the context.
             Output one step at a time think about the result that is given to you and generate the next step.
-            
+
             To analyze a disk image,
             1. Identify the offsets for each partition (Write a bash code block using the mmls tool from TSK(The Sleuth Kit)).
             2. Using the offsets, use a bash code block of the TSK tool to perform the task.
-            
+
             Use the following structure to solve tasks:
                 1. **Thought**: Analyze the task and determine the best SleuthKit commands or sequence to solve it.
                 2. **Action**: Select the appropriate command(s) to use and justify your choice.
@@ -67,19 +90,20 @@ async def on_chat_start():
         name="RAG_Proxy_Agent",
         human_input_mode="NEVER",
         system_message="Retrieve only the most relevant SleuthKit commands and details for solving the user's task. "
-                    "Provide precise commands and their explanations without additional interpretation.",
+                       "Provide precise commands and their explanations without additional interpretation.",
         max_consecutive_auto_reply=3,
         retrieve_config={
             "task": "qa",
-            "docs_path": [os.path.join(os.path.abspath(""), "sleuthkit_commands.txt"),os.path.join(os.path.abspath(""), "tsk_Tool_Overview.html")],
-            "custom_text_types": ["txt","html"],
+            "docs_path": [os.path.join(os.path.abspath(""), "sleuthkit_commands.txt"),
+                          os.path.join(os.path.abspath(""), "tsk_Tool_Overview.html")],
+            "custom_text_types": ["txt", "html"],
             "chunk_token_size": 100,
-            "model": llm_config["config_list"][1]["model"],
+            "model": llm_config["config_list"][0]["model"],
             "client": chromadb.PersistentClient(path="/tmp/chromadb"),
             "embedding_model": "all-mpnet-base-v2",
             "get_or_create": True,
             "must_break_at_empty_line": False,
-            "context_max_tokens":1000
+            "context_max_tokens": 1000
         },
         code_execution_config=False,
     )
@@ -87,7 +111,7 @@ async def on_chat_start():
     # Coder Agent setup
     coder_agent = ChainlitAssistantAgent(
         name="Coder_Writer_Agent",
-        llm_config=config_list[1],
+        llm_config=config_list[0],
         code_execution_config=False,
         human_input_mode="ALWAYS",
         system_message="""You are a helpful AI assistant.
@@ -112,7 +136,6 @@ async def on_chat_start():
     )
     context_handling.add_to_agent(coder_agent)
 
-
     # Create Code Executor Agent
     code_executor_agent = ChainlitUserProxyAgent(
         name="Code_Executor_Agent",
@@ -125,17 +148,17 @@ async def on_chat_start():
         name="Reporter_Agent",
         system_message="""
         You are a digital forensics expert responsible for generating comprehensive and accurate forensic reports. Your task is to summarize the findings, methodologies, and conclusions derived from the analysis of disk images and related data. The report should be structured as follows:
-        
+
         1. **Executive Summary**: Provide a brief overview of the investigation, including the purpose, scope, and key findings.
-        
+
         2. **Methodology**: Detail the tools, techniques, and commands used in the analysis, including any relevant parameters and configurations.
-        
+
         3. **Findings**: Summarize the results of the analysis, including any files or data recovered, evidence of tampering or deletion, and other relevant artifacts. Include specific command outputs where necessary.
-        
+
         4. **Analysis**: Provide a detailed interpretation of the findings, explaining the significance of the recovered data in the context of the investigation.
-        
+
         5. **Conclusion**: Offer a summary of the conclusions drawn from the analysis, including any recommendations for further investigation or actions.
-        
+
         6. **Appendices**: Include any additional materials, such as full command outputs, logs, or scripts, that support the findings and conclusions.
 
         Ensure that the report is clear, concise, and free of any technical jargon that might confuse a non-expert reader. Include timestamps and references to specific data sources where applicable. Aim for accuracy, clarity, and thoroughness in every section of the report.
@@ -151,17 +174,16 @@ async def on_chat_start():
 
     )
 
-
     # Create a custom speaker selection function
     def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
         messages = groupchat.messages
-        
+
         if last_speaker is rag_proxy_agent:
             return task_translation_agent
-        #direct all function calls to user_proxy
+        # direct all function calls to user_proxy
         if messages[-1].get("tool_calls") is not None:
             return user_proxy
-        #direct all function results to task_translation_agent
+        # direct all function results to task_translation_agent
         if messages[-1].get("role") == "tool":
             return coder_agent
         if last_speaker is task_translation_agent:
@@ -189,7 +211,7 @@ async def on_chat_start():
 
     # Create the GroupChat with agents
     groupchat = ChainlitGroupChat(
-        agents=[rag_proxy_agent,task_translation_agent, coder_agent, code_executor_agent, reporter_agent, user_proxy],
+        agents=[rag_proxy_agent, task_translation_agent, coder_agent, code_executor_agent, reporter_agent, user_proxy],
         messages=[],
         max_round=40,
         speaker_selection_method=custom_speaker_selection_func,
@@ -197,7 +219,6 @@ async def on_chat_start():
 
     # Initialize GroupChatManager
     manager = ChainlitGroupChatManager(groupchat=groupchat, llm_config=llm_config)
-
 
     register_function(
         get_tool_documentation,
@@ -213,7 +234,7 @@ async def on_chat_start():
     #     name="ask_human_expert",
     #     description="Ask human expert for help in the task"
     # )
-    
+
     await cl.make_async(rag_proxy_agent.initiate_chat)(
         manager,
         message=rag_proxy_agent.message_generator,
