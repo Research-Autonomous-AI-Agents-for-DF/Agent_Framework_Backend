@@ -34,10 +34,10 @@ async def on_chat_start():
         ]
     ).send()
 
-    if action.get("name") == "start_chat":
+    if action.get("payload").get("value") == "start_chat":
         await cl.Message(content=f"🔄 Starting agents on task: {TASK}...").send()
 
-        # Se,perate process to start agents to avoid blocking the main process
+        # Separate process to start agents to avoid blocking the main process
         asyncio.create_task(start_agents())
 
 
