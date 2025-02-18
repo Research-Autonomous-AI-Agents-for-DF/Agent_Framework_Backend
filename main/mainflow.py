@@ -1,16 +1,15 @@
-import asyncio
 import os
 import chromadb
 import chainlit as cl
 
-from autogen import Agent, GroupChat, GroupChatManager, UserProxyAgent, AssistantAgent, register_function, \
-    ConversableAgent
+from autogen import Agent, GroupChat, register_function
 from autogen.coding import DockerCommandLineCodeExecutor
 from dotenv import load_dotenv
-from functions import get_tool_documentation, ask_human_expert
+from functions import get_tool_documentation
 from autogen.agentchat.contrib.capabilities import transform_messages, transforms
-from chainlit_classes import ChainlitAssistantAgent, ChainlitRagProxyAgent, ChainlitUserProxyAgent, ChainlitGroupChat, \
+from chainlit_classes import ChainlitConversableAgent, ChainlitGroupChat, \
     ChainlitGroupChatManager
+from autogen.agentchat.contrib.retrieve_user_proxy_agent import RetrieveUserProxyAgent
 
 # Load environment variables from .env file
 load_dotenv()
@@ -18,26 +17,38 @@ load_dotenv("./.env.local", override=True)
 
 TASK = """Examine the deleted files in the disk image using the sleuthkit command line tools. Come up with the list of files, the partition they are located and assign a priority to each.
 image_location: ./dataset/test_image.dd"""
+rag_proxy_agent=None
+manager=None
 
-
+@cl.password_auth_callback
+def auth_callback(username: str, password: str):
+    # Fetch the user matching username from your database
+    # and compare the hashed password with the value stored in the database
+    if (username, password) == ("admin", "admin"):
+        return cl.User(
+            identifier="admin", metadata={"role": "admin", "provider": "credentials"}
+        )
+    else:
+        return None
 @cl.on_chat_start
 async def on_chat_start():
     await cl.Message(
         content="### 🌟 Welcome to the AI Agent Framework! \n\n"
                 "This tool allows you to interact with AI-driven agents to perform various tasks."
     ).send()
-
-    user_task = await cl.AskUserMessage(
-        content="Task to send to Agent Workflow",
-        author="User"
+    message = await cl.Message(
+        content="""Loading agents....
+        """
     ).send()
-    await cl.Message(content=f"🔄 Starting agents on task: {user_task.get("output")}...").send()
-
-        # Se,perate process to start agents to avoid blocking the main process
-    asyncio.create_task(start_agents(user_task.get("output")))
-
-
-async def start_agents(task):
+    await start_agents()
+    message.content = """Type the task the framework should excecute in the text box below. Follow this format
+        <Your query>
+        image_location: <image location>
+        """
+    await message.update()
+    
+async def start_agents():
+    global rag_proxy_agent, manager
     config_list = []
 
     for model in os.getenv("LLM_MODEL").split(","):
@@ -58,7 +69,7 @@ async def start_agents(task):
         work_dir="coding",  # Use the temporary directory to store the code files.
     )
     # Create Task Translation Agent
-    task_translation_agent = ChainlitAssistantAgent(
+    task_translation_agent = ChainlitConversableAgent(
         name="Task_Translation_Agent",
         system_message=(
             """You are an expert in SleuthKit commands. Your goal is to break down the user's task into smaller actionable steps.
@@ -102,31 +113,31 @@ async def start_agents(task):
         human_input_mode="ALWAYS"
     )
     # RAG Proxy Agent setup for command retrieval
-    rag_proxy_agent = ChainlitRagProxyAgent(
+    rag_proxy_agent = RetrieveUserProxyAgent(
         name="RAG_Proxy_Agent",
         human_input_mode="NEVER",
         system_message="Retrieve only the most relevant SleuthKit commands and details for solving the user's task. "
-                       "Provide precise commands and their explanations without additional interpretation.",
+                        "Provide precise commands and their explanations without additional interpretation.",
         max_consecutive_auto_reply=3,
         retrieve_config={
             "task": "qa",
             "docs_path": [os.path.join(os.path.abspath(""), "tsk_Tool_Overview.html")],
             "custom_text_types": ["html"],
-            "chunk_token_size": 250,
+            "chunk_token_size": 100,
             "model": llm_config["config_list"][0]["model"],
             "client": chromadb.PersistentClient(path="/tmp/chromadb"),
             "embedding_model": "all-mpnet-base-v2",
             "get_or_create": True,
             "must_break_at_empty_line": False,
-            "context_max_tokens": 1000
+            "context_max_tokens": 500
         },
         code_execution_config=False,
     )
 
     # Coder Agent setup
-    coder_agent = ChainlitAssistantAgent(
+    coder_agent = ChainlitConversableAgent(
         name="Coder_Writer_Agent",
-        llm_config=config_list[0],
+        llm_config=config_list[1],
         code_execution_config=False,
         human_input_mode="ALWAYS",
                 system_message="""You are a helpful AI assistant.
@@ -139,32 +150,32 @@ async def start_agents(task):
     If you want the user to save the code in a file before executing it, put # filename: <filename> inside the code block as the first line. Don't include multiple code blocks in one response. Do not ask users to copy and paste the result. Instead, use 'print' function for the output when relevant. Check the execution result returned by the user.
     If the result indicates there is an error, fix the error and output the code again. Suggest the full code instead of partial code or code changes. If the error can't be fixed or if the task is not solved even after the code is executed successfully, analyze the problem, revisit your assumption, collect additional info by asking the user if you need, and think of a different approach to try.
     When you find an answer, verify the answer carefully. Include verifiable evidence in your response if possible.
-    
+
     Important
     1. Do one command at a time.
     2. If you are generating a shell script, dont have any blank lines as it gets interpreted as \r in the terminal
 
     Call get_tool_documentation to get the documentation for a TSK command line tool.
     Reply "TERMINATE" in the end when everything is done.
-"""
+    """
     )
 
     context_handling = transform_messages.TransformMessages(
         transforms=[
-            transforms.MessageHistoryLimiter(max_messages=3),
+            transforms.MessageHistoryLimiter(max_messages=4),
         ]
     )
     context_handling.add_to_agent(coder_agent)
 
     # Create Code Executor Agent
-    code_executor_agent = ChainlitUserProxyAgent(
+    code_executor_agent = ChainlitConversableAgent(
         name="Code_Executor_Agent",
         code_execution_config={"executor": executor},
         default_auto_reply=
         "Please continue. If everything is done, reply 'TERMINATE'.",
     )
     # Create Reporter Agent
-    reporter_agent = ChainlitAssistantAgent(
+    reporter_agent = ChainlitConversableAgent(
         name="Reporter_Agent",
         system_message="""
         You are a digital forensics expert responsible for generating comprehensive and accurate forensic reports. Your task is to summarize the findings, methodologies, and conclusions derived from the analysis of disk images and related data. The report should be structured as follows:
@@ -187,7 +198,7 @@ async def start_agents(task):
     )
 
     # Admin
-    user_proxy = ChainlitUserProxyAgent(
+    user_proxy = ChainlitConversableAgent(
         name="Admin",
         system_message="A human admin. Review the outputs from the agents.",
         code_execution_config=False,
@@ -254,9 +265,13 @@ async def start_agents(task):
     #     name="ask_human_expert",
     #     description="Ask human expert for help in the task"
     # )
-
+    
+@cl.on_message
+async def main(message: cl.Message):
+    message_content = message.content
+    print(message_content)
     await cl.make_async(rag_proxy_agent.initiate_chat)(
         manager,
         message=rag_proxy_agent.message_generator,
-        problem=task
+        problem=message_content
     )

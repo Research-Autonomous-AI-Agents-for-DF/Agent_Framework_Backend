@@ -1,7 +1,7 @@
 import chainlit as cl
 
 from typing import List, Optional, Union, Dict
-from autogen import Agent, GroupChat, GroupChatManager, UserProxyAgent, AssistantAgent
+from autogen import Agent, GroupChat, GroupChatManager, UserProxyAgent, AssistantAgent, ConversableAgent
 from autogen.agentchat.contrib.retrieve_user_proxy_agent import RetrieveUserProxyAgent
 
 async def ask_helper(func, **kwargs):
@@ -10,8 +10,7 @@ async def ask_helper(func, **kwargs):
         res = await func(**kwargs).send()
     return res
 
-#Overriding default autogen agents to fit to chainlit
-class ChainlitAssistantAgent(AssistantAgent):
+class ChainlitConversableAgent(ConversableAgent):
     def get_human_input(self, prompt: str) -> str:
         if "Press enter to skip and use auto-reply, or type 'exit' to end the conversation:" in prompt:
             res = cl.run_sync(
@@ -41,70 +40,6 @@ class ChainlitAssistantAgent(AssistantAgent):
                 return "exit"
 
         reply = cl.run_sync(ask_helper(cl.AskUserMessage, content=prompt, timeout=60))
-        return reply["output"].strip()
-class ChainlitUserProxyAgent(UserProxyAgent):
-    def get_human_input(self, prompt: str) -> str:
-        if "Press enter to skip and use auto-reply, or type 'exit' to end the conversation:" in prompt:
-            res = cl.run_sync(
-                ask_helper(
-                    cl.AskActionMessage,
-                    content="Continue or provide feedback?",
-                    actions=[
-                        cl.Action(
-                            name="continue", payload={"value": "continue"}, label="✅ Continue"
-                        ),
-                        cl.Action(
-                            name="feedback",
-                            payload={"value": "feedback"},
-                            label="💬 Provide feedback",
-                        ),
-                        cl.Action( 
-                            name="exit",
-                            payload={"value": "exit"}, 
-                            label="🔚 Exit Conversation" 
-                        ),
-                    ],
-                )
-            )
-            if res.get("payload").get("value") == "continue":
-                return ""
-            if res.get("payload").get("value") == "exit":
-                return "exit"
-
-        reply = cl.run_sync(ask_helper(cl.AskUserMessage, content=prompt, timeout=60))
-
-        return reply["output"].strip()
-class ChainlitRagProxyAgent(RetrieveUserProxyAgent):
-    def get_human_input(self, prompt: str) -> str:
-        if "Press enter to skip and use auto-reply, or type 'exit' to end the conversation:" in prompt:
-            res = cl.run_sync(
-                ask_helper(
-                    cl.AskActionMessage,
-                    content="Continue or provide feedback?",
-                    actions=[
-                        cl.Action(
-                            name="continue", payload={"value": "continue"}, label="✅ Continue"
-                        ),
-                        cl.Action(
-                            name="feedback",
-                            payload={"value": "feedback"},
-                            label="💬 Provide feedback",
-                        ),
-                        cl.Action( 
-                            name="exit",
-                            payload={"value": "exit"}, 
-                            label="🔚 Exit Conversation" 
-                        ),
-                    ],
-                )
-            )
-            if res.get("payload").get("value") == "continue":
-                return ""
-            if res.get("payload").get("value") == "exit":
-                return "exit"
-
-        reply = cl.run_sync(ask_helper(cl.AskUserMessage, content=prompt, timeout=60))
-
         return reply["output"].strip()
 class ChainlitGroupChatManager(GroupChatManager):
     def _process_received_message(self, message: Union[Dict, str], sender: Agent, silent: bool):
