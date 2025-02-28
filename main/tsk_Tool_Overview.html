@@ -1,0 +1,98 @@
+<h1 id="tsk-tool-overview">TSK Tool Overview</h1>
+<p>This page provides an overview of the command line tools in TSK. The TSK tools are organized into layers and this
+    page is organized based on those layers. In general, the following tools take a disk or file system image as input.
+</p>
+<h1 id="file-system-tools">File System Tools</h1>
+<h2 id="fully-automated-tools">Fully Automated Tools</h2>
+<p>These tools integrate the volume and file system functionality. Instead of analyzing only a single file system, these
+    tools take a disk image as input and identify the volumes and process the contents.</p>
+<ul>
+    <li><strong>tsk_comparedir</strong>: Compares a local directory hierarchy with the contents of raw device (or disk
+        image). This can be used to detect rootkits.</li>
+    <li><strong>tsk_gettimes</strong>: Extracts all of the temporal data from the image to make a timeline. Equivalent
+        to running <strong>fls</strong> with the &#39;-m&#39; option.</li>
+    <li><strong>tsk_loaddb</strong>: Loads the metadata from an image into a SQLite database. This allows other tools to
+        be easily written in a variety of languages and give them access to the image contents.</li>
+    <li><strong>tsk_recover</strong>: Extracts the unallocated (or allocated) files from a disk image to a local
+        directory.</li>
+</ul>
+<h2 id="file-system-layer-tools">File System Layer Tools</h2>
+<p>These file system tools process general file system data, such as the layout, allocation structures, and boot blocks
+</p>
+<ul>
+    <li><strong>fsstat</strong>: Shows file system details and statistics including layout, sizes, and labels.</li>
+</ul>
+<h2 id="file-name-layer-tools">File Name Layer Tools</h2>
+<p>These file system tools process the file name structures, which are typically located in the parent directory.</p>
+<ul>
+    <li><strong>ffind</strong>: Finds allocated and unallocated file names that point to a given meta data structure.
+    </li>
+    <li><strong>fls</strong>: Lists allocated and deleted file names in a directory.</li>
+</ul>
+<h2 id="meta-data-layer-tools">Meta Data Layer Tools</h2>
+<p>These file system tools process the meta data structures, which store the details about a file. Examples of this
+    structure include directory entries in FAT, MFT entries in NTFS, and inodes in ExtX and UFS.</p>
+<ul>
+    <li><strong>icat</strong>: Extracts the data units of a file, which is specified by its meta data address (instead
+        of the file name).</li>
+    <li><strong>ifind</strong>: Finds the meta data structure that has a given file name pointing to it or the meta data
+        structure that points to a given data unit.</li>
+    <li><strong>ils</strong>: Lists the meta data structures and their contents in a pipe delimited format.</li>
+    <li><strong>istat</strong>: Displays the statistics and details about a given meta data structure in an easy to read
+        format.</li>
+</ul>
+<h2 id="data-unit-layer-tools">Data Unit Layer Tools</h2>
+<p>These file system tools process the <strong>data units</strong> where file content is stored. Examples of this layer
+    include clusters in FAT and NTFS and blocks and fragments in ExtX and UFS.</p>
+<ul>
+    <li><strong>blkcat</strong>: Extracts the contents of a given data unit.</li>
+    <li><strong>blkls</strong>: Lists the details about data units and can extract the unallocated space of the file
+        system.</li>
+    <li><strong>blkstat</strong>: Displays the statistics about a given data unit in an easy to read format.</li>
+    <li><strong>blkcalc</strong>: Calculates where data in the unallocated space image (from <strong>blkls</strong>)
+        exists in the original image. This is used when evidence is found in unallocated space.</li>
+</ul>
+<h2 id="file-system-journal-tools">File System Journal Tools</h2>
+<p>These file system tools process the journal that some file systems have. The journal records the metadata (and
+    sometimes content) updates that are made. This could help recover recently deleted data. Examples of file systems
+    with journals include Ext3 and NTFS.</p>
+<ul>
+    <li><strong>jcat</strong>: Display the contents of a specific journal block.</li>
+    <li><strong>jls</strong>: List the entries in the file system journal.</li>
+</ul>
+<h1 id="volume-system-tools">Volume System Tools</h1>
+<p>These tools take a disk (or other media) image as input and analyze its partition structures. Examples include DOS
+    partitions, BSD disk labels, and the Sun Volume Table of Contents (VTOC). These can be used find hidden data between
+    partitions and to identify the file system offset for The Sleuth Kit tools. The media management tools support DOS
+    partitions, BSD disk labels, Sun VTOC, and Mac partitions.</p>
+<ul>
+    <li><strong>mmls</strong>: Displays the layout of a disk, including the unallocated spaces.</li>
+    <li><strong>mmstat</strong>: Display details about a volume system (typically only the type).</li>
+    <li><strong>mmcat</strong>: Extracts the contents of a specific volume to STDOUT.</li>
+</ul>
+<h1 id="image-file-tools">Image File Tools</h1>
+<p>This layer contains tools for the image file format. For example, if the image format is a split image or a
+    compressed image.</p>
+<ul>
+    <li><strong>img_stat</strong>: tool will show the details of the image format</li>
+    <li><strong>img_cat</strong>: This tool will show the raw contents of an image file.</li>
+</ul>
+<h1 id="disk-tools">Disk Tools</h1>
+<p>These tools can be used to detect and remove a Host Protected Area (HPA) in an ATA disk. A HPA could be used to hide
+    data so that it would not be copied during an acquisition. These tools are currently Linux-only.</p>
+<ul>
+    <li><strong>disk_sreset</strong>: This tool will temporarily remove a HPA if one exists. After the disk is reset,
+        the HPA will return.</li>
+    <li><strong>disk_stat</strong>: This tool will show if an HPA exists.</li>
+</ul>
+<h1 id="other-tools">Other Tools</h1>
+<ul>
+    <li><strong>hfind</strong>: Uses a binary sort algorithm to lookup hashes in the NIST NSRL, Hashkeeper, and custom
+        hash databases created by md5sum.</li>
+    <li><strong>mactime</strong>: Takes input from the <strong>fls</strong> and <strong>ils</strong> tools to create a
+        <strong>timeline</strong> of file activity.</li>
+    <li><strong>sorter</strong>: Sorts files based on their file type and performs extension checking and hash database
+        lookups.</li>
+    <li><strong>sigfind</strong>: Searches for a binary value at a given offset. Useful for recovering lost data
+        structures.</li>
+</ul>
