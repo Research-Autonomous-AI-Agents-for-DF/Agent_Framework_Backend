@@ -1,3 +1,4 @@
+import json
 import os
 
 from typing import Dict, List
@@ -7,12 +8,12 @@ from autogen.agentchat.contrib.retrieve_user_proxy_agent import RetrieveUserProx
 import chromadb
 from dotenv import load_dotenv
 from typing_extensions import Annotated
-from functions import get_tool_documentation
+from functions import get_tool_documentation, parse_mmls_output
 
 
 # Load environment variables from .env file
 load_dotenv()
-load_dotenv("../.env.local", override=True)
+load_dotenv("./.env.local", override=True)
 
 # Define the LLM configuration
 llm_config = {
@@ -36,10 +37,23 @@ executor = DockerCommandLineCodeExecutor(
 task_translation_agent = AssistantAgent(
     name="Task_Translation_Agent",
     system_message=(
-        "You are an expert in SleuthKit commands. Your goal is to break down the user's task into smaller actionable steps. "
-        "Use the provided context strictly to identify commands relevant to the task and describe how to use them. "
-        "DO NOT summarize the context or provide explanations beyond what is needed to complete the task. "
-        "Break down the task step by step, ensuring each step uses a specific SleuthKit command from the context."
+        """You are an expert in The Sleuth Kit (TSK) commands. Your goal is to break down the user's task into smaller actionable steps.
+        DO NOT summarize the context or provide explanations beyond what is needed to complete the task.
+        Break down the task step by step, ensuring each step uses a specific SleuthKit command from the context.
+        Output one step at a time think about the result that is given to you and generate the next step.
+        
+        To analyze a disk image,
+        1. Identify the offsets for each partition (Suggest using the mmls tool from TSK(The Sleuth Kit)).
+        2. Using the offsets, suggest the most suitable TSK tool from the context to perform the task.
+        
+        Use the following structure to solve tasks:
+            1. **Thought**: Analyze the task and determine the best SleuthKit commands or sequence to solve it.
+            2. **Action**: Select the appropriate command(s) and inputs required for the command(s) to use and justify your choice.
+            3. **Observation**: I will perform the action. Analyze the results. If further action is needed, continue with the next step.
+            
+        Important:
+        Call one tool at a time
+            """
     ),
     llm_config=llm_config,
 )
@@ -65,6 +79,20 @@ rag_proxy_agent = RetrieveUserProxyAgent(
     },
     code_execution_config=False,
 )
+
+def retrieve_content(
+        message: Annotated[
+            str,
+            "Refined message which keeps the original meaning and can be used to retrieve content for code generation and question answering.",
+        ],
+        n_results: Annotated[int, "number of results"] = 2,
+    ) -> str:
+        rag_proxy_agent.n_results = n_results  # Set the number of results to be retrieved.
+        rag_proxy_agent.retrieve_docs(problem=message, n_results=n_results)
+        retrieved_docs = rag_proxy_agent._results
+        result = [entry[0]['content'] for entry in retrieved_docs[0]]
+        # ret_msg = rag_proxy_agent.message_generator(rag_proxy_agent, None, _context)
+        return result or message
 
 # Coder Agent setup
 coder_agent = AssistantAgent(
@@ -147,69 +175,21 @@ def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
     messages = groupchat.messages
 
     if len(messages) <= 1:
-        image_info_agent._default_auto_reply = getImageInfo(last_speaker)
-        return image_info_agent
+        return task_translation_agent
     #direct all function calls to user_proxy
     if messages[-1].get("tool_calls") is not None:
         return user_proxy
     #direct all function results to task_translation_agent
     if messages[-1].get("role") == "tool":
         return task_translation_agent
-    if last_speaker is image_info_agent:
-        # Extract the 'content' field from the first message
-        first_message_content = messages[0].get('content', '')
-
-        # Retrieve documents
-        rag_proxy_agent.retrieve_docs(problem=first_message_content)
-        retrieved_docs = rag_proxy_agent.results
-        # `retrieved_contents` contains all the extracted 'content' strings from retrivd_docs
-        retrieved_contents = [entry[0]['content'] for entry in retrieved_docs[0]]
-
-        print("retrieved_contents:", retrieved_contents)
-
-        groupchat.messages.append({
-            "content": f"Retrieved Context:\n{retrieved_contents}",
-            "role": "agent",
-            "name": "RAG_Proxy_Agent"
-        })
-        # print('after append the group massage', groupchat.messages)
-
-        # Next speaker: Task Translation Agent
-        return task_translation_agent
-    if last_speaker is task_translation_agent:
-        # Generate one task at a time, then pass to Coder Agent
-        return coder_agent
-
-    elif last_speaker is coder_agent:
-        # After Coder Agent, pass the task to Code Executor Agent
-        return code_executor_agent
-
-    elif last_speaker is code_executor_agent:
-        # Check if execution was successful or failed
-        if "execution failed" in messages[-1]["content"] or "failed" in messages[-1]["content"] or "change" in messages[-1]["content"] or "Error" in messages[-1]["content"]:
-            return coder_agent  # Retry with the Coder Agent if failed
-
-        # If successful, go back to Task Translation Agent for the next task
-        if "execution successful" in messages[-1]["content"] or "success" in messages[-1]["content"] or "succeed" in messages[-1]["content"]:
-            return task_translation_agent
-
-    elif last_speaker is reporter_agent:
-        # Once all tasks are completed, switch to manual mode for final review
-        return "manual"
 
     else:
         # Default fallback
-        return "random"
-
-image_info_agent= UserProxyAgent(
-    name="Image_Info_Agent",
-    code_execution_config=False,
-    human_input_mode="NEVER",
-)
+        return "manual"
 
 # Create the GroupChat with agents
 groupchat = GroupChat(
-    agents=[rag_proxy_agent,task_translation_agent, coder_agent, code_executor_agent, reporter_agent, image_info_agent, user_proxy],
+    agents=[rag_proxy_agent,task_translation_agent, coder_agent, code_executor_agent, reporter_agent, user_proxy],
     messages=[],
     max_round=40,
     speaker_selection_method=custom_speaker_selection_func,
@@ -218,24 +198,18 @@ groupchat = GroupChat(
 # Initialize GroupChatManager
 manager = GroupChatManager(groupchat=groupchat, llm_config=llm_config)
 
-#comman functions
-def getImageInfo(lastSpeaker):
-    if lastSpeaker is user_proxy:
-        messageFromUser = user_proxy.last_message()["content"]
-        fileLocation = messageFromUser.split(":", 1)[1].strip().split(" ", 1)[0]
-        codeMessage = f"""```sh
-                        mmls {fileLocation}
-                        ```"""
-        output = f"Promt: '{messageFromUser}'\nImage Info: '{getCodeOutput(codeMessage)}'"
-        return output
-    return
-# @user_proxy.register_for_execution()
-# @task_translation_agent.register_for_llm(description="Used to get the template for the particular SleuthKit command line tool")
-# def get_tool_template(commandName:Annotated[str, "Command Line Tool Name"]) -> str:
-#     codeMessage = f"""```sh
-#                     {commandName}
-#                     ```"""
-#     return getCodeOutput(codeMessage).split(":", 1)[1].split(" ", 1)[1].strip()
+@task_translation_agent.register_for_llm(description="Used to get the partition information of the disk image. Provides the start, end, length and description of the partitions.")
+@user_proxy.register_for_execution()
+def getImageInfo(image_location:Annotated[str, "Image Location"]) -> str:
+    codeMessage = f"""```sh
+                    mmls {image_location}
+                    ```"""
+    raw_output = getCodeOutput(codeMessage)
+    result = parse_mmls_output(raw_output)
+    json_output = json.dumps(result, indent=2)
+    
+    return json_output
+
 def getCodeOutput(codeMessage):
     code_blocks = executor.code_extractor.extract_code_blocks(message=codeMessage)
     code_output = executor.execute_code_blocks(code_blocks=code_blocks)
@@ -248,13 +222,13 @@ register_function(
     name="get_tool_documentation",
     description="Get the documentation for the Sleuth kit command line tool",
 )
-# register_function(
-#     get_tool_template,
-#     caller=task_translation_agent,
-#     executor=coder_agent,
-#     name="get_tool_template",
-#     description="Used to get the template for the particular SleuthKit command line tool",
-# )
+register_function(
+    retrieve_content,
+    caller=task_translation_agent,
+    executor=user_proxy,
+    name="retrieve_content",
+    description="retrieve content about TSK for code generation and question answering.",
+)
 
 # Start the conversation by sending a task to the Task Translation Agent
 user_proxy.initiate_chat(
@@ -262,5 +236,5 @@ user_proxy.initiate_chat(
                      "'test_image.dd'"
                      " using the sleuthkit command line tools. Use the tsk command line tools and come up "
                      "with a list of deleted file names. Store them in file named 'deleted_files.txt'."
-                     "image_location: ./test_image.dd "
+                     "image_location: ./dataset/test_image.dd "
 )
