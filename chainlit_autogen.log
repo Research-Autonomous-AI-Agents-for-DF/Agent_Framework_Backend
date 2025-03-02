@@ -1,0 +1,27 @@
+2025-02-22 20:22:06 [INFO] chainlit_autogen_logger: === Chainlit + Autogen Logging Initialized ===
+2025-02-22 20:23:19 [INFO] chainlit_autogen_logger: [CHAINLIT] Chat session started.
+2025-02-22 20:23:51 [INFO] chainlit_autogen_logger: [CHAINLIT] Received user message: Examine the deleted files in the disk image using the sleuthkit command line tools. Come up with the list of files, the partition they are located and assign a priority to each.
+
+image_location: ./dataset/test_image.dd
+2025-02-22 20:23:51 [DEBUG] chainlit_autogen_logger: [CHAINLIT] Processing user message: Examine the deleted files in the disk image using the sleuthkit command line tools. Come up with the list of files, the partition they are located and assign a priority to each.
+
+image_location: ./dataset/test_image.dd
+2025-02-22 21:52:32 [INFO] chainlit_autogen_logger: === Chainlit + Autogen Logging Initialized ===
+2025-02-22 21:53:38 [INFO] chainlit_autogen_logger: [CHAINLIT] Chat session started.
+2025-02-22 21:53:39 [INFO] chainlit_autogen_logger: [CHAINLIT] Chat session started.
+2025-02-22 21:53:57 [INFO] chainlit_autogen_logger: [CHAINLIT] Received user message: Examine the deleted files in the disk image using the sleuthkit command line tools. Come up with the list of files, the partition they are located and assign a priority to each.
+
+image_location: ./dataset/test_image.dd
+2025-02-22 21:53:57 [DEBUG] chainlit_autogen_logger: [CHAINLIT] Processing user message: Examine the deleted files in the disk image using the sleuthkit command line tools. Come up with the list of files, the partition they are located and assign a priority to each.
+
+image_location: ./dataset/test_image.dd
+2025-02-22 21:58:59 [INFO] chainlit_autogen_logger: === Chainlit + Autogen Logging Initialized ===
+2025-02-22 21:59:21 [INFO] chainlit_autogen_logger: [CHAINLIT] Chat session started.
+2025-02-22 21:59:21 [INFO] chainlit_autogen_logger: [CHAINLIT] Chat session started.
+2025-02-22 21:59:21 [INFO] chainlit_autogen_logger: [CHAINLIT] Chat session started.
+2025-02-22 22:02:54 [INFO] chainlit_autogen_logger: [CHAINLIT] Received user message: Examine the deleted files in the disk image using the sleuthkit command line tools. Come up with the list of files, the partition they are located and assign a priority to each.
+
+image_location: ./dataset/test_image.dd
+2025-02-22 22:02:54 [DEBUG] chainlit_autogen_logger: [CHAINLIT] Processing user message: Examine the deleted files in the disk image using the sleuthkit command line tools. Come up with the list of files, the partition they are located and assign a priority to each.
+
+image_location: ./dataset/test_image.dd

@@ -1,0 +1,809 @@
+2025-02-24 02:22:34 [INFO] chainlit_audit_logger: === Chainlit + Autogen Logging Initialized ===
+2025-02-24 02:22:45 [INFO] chainlit_audit_logger: [CHAINLIT] Chat session started.
+2025-02-24 02:22:47 [INFO] chainlit_audit_logger: [CHAINLIT] Chat session started.
+2025-02-24 02:22:52 [INFO] chainlit_audit_logger: Thread ID: ed2a6b93-70bf-4929-9204-75404a9087cd
+2025-02-24 02:29:53 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-24 02:30:06 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-24 02:30:07 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-24 02:30:07 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-24 02:30:19 [INFO    ] chainlit_audit_logger    : Thread ID: 94d94170-8336-4fa9-92e4-d0378b82ebe0
+2025-02-24 14:40:43 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-24 14:40:55 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-24 14:53:39 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-24 14:56:18 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-24 14:59:22 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-24 15:07:29 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-24 15:07:40 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-24 15:07:40 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-24 15:48:53 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-24 15:49:07 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-24 15:49:11 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-24 15:49:11 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-24 15:49:19 [INFO    ] chainlit_audit_logger    : Thread ID: 37ebea9b-21aa-4fe9-ad43-ded2c0d7bfa9
+2025-02-26 17:56:37 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-26 17:56:50 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 18:49:01 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-26 18:49:13 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 18:49:15 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 18:49:23 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 18:49:34 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 18:50:02 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 18:59:06 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-26 18:59:17 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 18:59:17 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 18:59:18 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:15:27 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-26 19:15:38 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:15:39 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:15:39 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:15:39 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:15:48 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:15:56 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:18:11 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-26 19:18:23 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:18:23 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:18:24 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:18:24 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:18:25 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:18:26 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:19:04 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:19:18 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:19:28 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:19:34 [INFO    ] chainlit_audit_logger    : Thread ID: 89b17453-8b01-497c-9a08-78ba70cd9783
+2025-02-26 19:34:43 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-26 19:34:54 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:34:57 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:34:57 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:34:58 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:35:02 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:35:09 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:35:27 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:35:48 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:36:27 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:38:24 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-26 19:38:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:38:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:38:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:38:37 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:38:45 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:38:54 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:40:21 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-26 19:40:34 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:40:43 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:41:27 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-26 19:41:37 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:41:37 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:41:38 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:42:25 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:45:12 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-26 19:45:23 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:45:25 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:45:25 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:45:26 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:45:27 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:45:28 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:46:23 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:46:28 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:50:45 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-26 19:50:55 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:50:55 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:50:55 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:50:56 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:50:56 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:50:57 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:50:58 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:50:59 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:51:06 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:51:08 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:51:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 19:51:51 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:40:06 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-26 20:40:18 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:40:18 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:40:18 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:40:19 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:40:19 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:40:23 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:40:25 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:40:48 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:44:48 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-26 20:44:59 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:44:59 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:44:59 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:45:00 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:45:01 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:45:02 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:45:03 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:45:10 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:45:14 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:46:06 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:47:22 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:52:43 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-26 20:52:55 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:52:55 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:52:55 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:52:55 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:52:55 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:52:55 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:52:55 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:52:55 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:52:55 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:52:57 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:52:58 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-26 20:53:00 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 01:54:51 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 01:55:04 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 01:55:04 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 01:55:04 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 01:55:09 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 01:55:13 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 01:55:25 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 01:59:28 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 01:59:39 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 01:59:39 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 01:59:40 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 01:59:44 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:00:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:02:27 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 02:02:39 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:02:41 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:02:41 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:03:00 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:03:37 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:06:49 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 02:07:01 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:07:01 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:07:01 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:07:03 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:07:03 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:07:04 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:11:40 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 02:11:52 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:11:52 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:11:52 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:11:53 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:11:54 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:11:54 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:11:55 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:15:16 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 02:15:27 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:15:27 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:15:27 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:15:27 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:15:28 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:15:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:15:30 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:15:31 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:15:37 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:15:52 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:19:44 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 02:19:55 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:19:56 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:19:56 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:19:56 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:19:56 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:19:57 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:19:59 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:19:59 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:19:59 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:19:59 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:19:59 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:20:02 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:21:12 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 02:21:24 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:21:24 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:21:24 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:21:24 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:21:24 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:21:24 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:21:24 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:21:24 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:21:25 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:21:25 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:21:26 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:21:27 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:21:27 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:21:41 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:24:39 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:24:50 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:27:41 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 02:27:52 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:27:52 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:27:52 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:27:52 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:27:53 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:27:55 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:27:56 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:30:03 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 02:30:14 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:30:15 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:30:18 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:30:18 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:30:18 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:34:45 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 02:34:56 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:34:56 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:34:57 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:34:57 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:34:59 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:35:00 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:36:16 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 02:36:27 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:36:27 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:36:27 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:36:28 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:36:28 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:36:30 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:36:31 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:47:22 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:59:44 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 02:59:55 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:59:56 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 02:59:56 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:10:09 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 03:10:25 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:10:26 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:10:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:10:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:21:57 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 03:22:08 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:22:08 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:22:09 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:22:10 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:22:11 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:22:17 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:22:21 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:22:33 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:25:31 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 03:25:44 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:25:46 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:25:46 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:28:47 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 03:28:59 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:29:00 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:29:00 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:29:02 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:29:42 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:35:37 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 03:35:50 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:35:50 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:35:50 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:35:50 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:35:51 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:43:29 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 03:43:40 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:43:40 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:43:40 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:43:41 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:43:42 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:43:44 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:43:45 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:44:33 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 03:44:49 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:44:49 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:44:50 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:44:50 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:44:51 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:44:52 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:46:33 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:46:41 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:47:31 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 03:47:42 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:47:42 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:47:43 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:47:43 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:47:43 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:47:43 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:47:44 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:47:46 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:47:46 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:48:17 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:48:56 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 03:49:08 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:49:08 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:49:08 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:49:08 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:49:08 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:49:09 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:49:09 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:49:10 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:49:11 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:49:11 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:49:11 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:49:15 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:53:18 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 03:53:30 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:53:30 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:53:30 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:53:30 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:53:30 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:53:30 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:53:30 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:53:30 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:53:30 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:53:31 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:53:31 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:53:32 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:53:33 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:55:13 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 03:55:24 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:55:24 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:55:25 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:55:25 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:55:25 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:55:25 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:55:25 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:55:25 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:55:25 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:55:25 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:55:25 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:55:26 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:55:26 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:55:28 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 03:56:16 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:01:35 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 04:01:46 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:01:46 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:01:48 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:01:48 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:01:48 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:01:48 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:01:48 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:01:48 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:01:48 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:01:48 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:01:48 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:01:48 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:01:49 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:01:49 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:01:50 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:01:51 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:06:05 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 04:06:16 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:06:16 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:06:16 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:06:16 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:06:16 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:06:16 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:06:16 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:06:16 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:06:16 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:06:16 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:06:16 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:06:16 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:06:17 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:06:17 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:06:19 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:06:20 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:06:20 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:08:48 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 04:09:01 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:09:01 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:09:01 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:09:02 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:09:02 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:09:02 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:09:02 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:09:02 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:09:02 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:09:02 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:09:02 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:09:02 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:09:02 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:09:02 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:09:02 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:09:03 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:09:04 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:09:05 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:12:24 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 04:12:36 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:12:36 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:12:36 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:12:36 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:12:36 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:12:36 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:12:36 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:12:36 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:12:36 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:12:36 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:12:36 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:12:36 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:12:36 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:12:36 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:12:37 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:12:37 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:12:37 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:12:39 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:20:15 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 04:20:26 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:20:26 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:20:26 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:20:26 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:20:27 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:20:27 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:20:28 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:20:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:20:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:20:30 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:20:32 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:20:36 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:20:38 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:20:39 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:20:40 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:20:41 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 04:21:44 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:20:38 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 10:21:16 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 10:21:44 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:22:40 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:23:37 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 10:23:48 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:23:50 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:23:58 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:24:07 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:25:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:26:49 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 10:27:00 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:27:01 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:27:05 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:27:15 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:29:21 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 10:29:33 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:29:33 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:29:34 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:29:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:29:37 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:31:22 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:36:22 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:40:28 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 10:40:40 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:40:40 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:40:40 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:40:40 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:40:41 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:40:41 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:40:42 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:40:44 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:40:54 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:41:21 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:41:36 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 10:41:49 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:41:50 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:41:50 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:41:50 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:41:50 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:41:50 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:41:50 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:41:50 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:41:50 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:41:50 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:41:53 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:41:54 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:42:46 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:42:48 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:54:06 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 10:54:17 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:54:18 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:54:18 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:54:18 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:54:18 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:54:18 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:54:18 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:54:19 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:54:19 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:54:20 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:54:21 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:57:14 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 10:57:26 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:57:26 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:57:26 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:57:26 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:57:26 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:57:26 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:57:26 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:57:27 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:57:27 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:57:27 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:57:28 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:57:28 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:58:08 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 10:58:20 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:58:20 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:58:20 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:58:20 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:58:21 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:58:22 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:58:22 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:58:22 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:58:22 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:58:23 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:58:24 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:58:24 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 10:58:25 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:00:20 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 11:00:32 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:00:32 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:00:32 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:00:32 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:00:32 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:00:32 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:00:32 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:00:32 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:00:32 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:00:32 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:00:33 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:00:33 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:00:34 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:00:34 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:01:50 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 11:02:04 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:02:04 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:02:04 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:02:04 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:02:04 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:02:04 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:02:04 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:02:04 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:02:04 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:02:05 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:02:05 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:02:05 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:02:05 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:02:06 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:02:06 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:03:24 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:22:16 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 11:22:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:22:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:22:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:22:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:22:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:22:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:22:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:22:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:22:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:22:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:22:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:22:30 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:22:31 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:22:32 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:22:32 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:22:33 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:22:37 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:22:41 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:22:44 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:22:54 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:22:58 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:23:01 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:26:23 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 11:26:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:26:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:26:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:26:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:26:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:26:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:26:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:26:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:26:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:26:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:26:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:26:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:26:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:26:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:26:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:26:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:26:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:26:36 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:26:36 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:26:37 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:26:38 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:28:22 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 11:28:34 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:28:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:28:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:28:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:28:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:28:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:28:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:28:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:28:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:28:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:28:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:28:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:28:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:28:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:28:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:28:36 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:28:36 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:28:36 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:28:36 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:28:37 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:28:38 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:28:38 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:03 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 11:34:15 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:15 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:15 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:15 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:15 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:15 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:15 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:15 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:15 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:15 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:15 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:15 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:15 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:15 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:15 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:15 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:16 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:16 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:16 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:17 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:17 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:18 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:34:19 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:35:35 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 11:35:46 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:35:46 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:35:47 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:35:47 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:35:47 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:35:47 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:35:47 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:35:47 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:35:48 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 11:35:49 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 12:28:37 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 12:28:51 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 12:28:54 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 12:32:18 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 12:32:31 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 12:32:31 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 12:32:31 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 12:33:00 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 12:33:51 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 12:35:39 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:00:17 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 14:00:33 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:00:37 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:08:01 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 14:08:12 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:08:13 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:08:22 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:12:04 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:12:11 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:12:58 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 14:13:08 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:13:09 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:13:09 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:13:09 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:13:10 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:13:14 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:21:38 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 14:21:51 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:21:51 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:21:52 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:21:53 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:21:53 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:21:54 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:21:55 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:22:10 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:43:06 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 14:43:16 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:43:16 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:43:16 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:43:17 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:43:17 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:43:18 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:43:19 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:43:19 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:43:20 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:45:08 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 14:45:19 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:45:19 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:45:19 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:45:19 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:45:19 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:45:19 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:45:20 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:45:20 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:45:21 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:45:22 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:48:18 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 14:48:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:48:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:48:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:48:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:48:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:48:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:48:29 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:48:30 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:48:30 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:48:31 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:48:32 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:51:23 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 14:51:34 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:51:34 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:51:34 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:51:34 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:51:34 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:51:34 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:51:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:51:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:51:36 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:51:37 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:51:37 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 14:51:38 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:03:23 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:06:58 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 15:07:09 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:07:09 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:07:09 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:07:09 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:07:09 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:07:09 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:07:09 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:07:09 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:07:10 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:07:10 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:07:11 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:07:12 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:07:12 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:07:14 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:12:31 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 15:12:42 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:12:42 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:12:42 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:12:42 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:12:42 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:12:42 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:12:42 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:12:42 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:12:43 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:12:43 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:12:43 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:12:43 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:12:44 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:12:45 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 15:12:46 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 16:29:01 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 16:29:12 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 16:29:12 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 16:30:39 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 16:30:51 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 16:30:51 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 16:30:51 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 16:35:59 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-02-27 16:36:12 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 16:36:12 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 16:36:12 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 16:36:13 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 16:39:00 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-02-27 16:40:14 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-03-03 01:22:22 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-03-03 01:22:35 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-03-03 01:39:59 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-03-03 01:40:09 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-03-03 01:40:09 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-03-03 01:41:42 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-03-03 01:41:53 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-03-03 01:41:54 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-03-03 01:41:55 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-03-03 01:45:06 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-03-03 01:45:18 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-03-03 01:45:18 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-03-03 01:45:18 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-03-03 01:45:18 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-03-03 01:49:46 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-03-03 01:49:59 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-03-03 01:51:58 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-03-03 01:52:08 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-03-03 01:52:09 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-03-03 01:52:27 [INFO    ] chainlit_audit_logger    : Thread ID: 3b5e0fab-7f34-43d3-85a5-9698104e1e1d
+2025-03-03 01:56:47 [INFO    ] chainlit_audit_logger    : === Chainlit + Autogen Logging Initialized ===
+2025-03-03 01:56:58 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-03-03 01:57:01 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-03-03 01:57:09 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
+2025-03-03 01:58:03 [INFO    ] chainlit_audit_logger    : [CHAINLIT] Chat session started.
