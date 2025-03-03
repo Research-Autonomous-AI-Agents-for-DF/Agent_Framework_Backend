@@ -15,17 +15,22 @@ from functions import get_tool_documentation, parse_mmls_output
 load_dotenv()
 load_dotenv("./.env.local", override=True)
 
-# Define the LLM configuration
-llm_config = {
-    "config_list": [
+config_list = []
+
+for model in os.getenv("LLM_MODEL").split(","):
+    config_list.append(
         {
-            "model": os.getenv("LLM_MODEL"),
+            "model": model,
             "base_url": os.getenv("LLM_BASE_URL"),
             "api_key": os.getenv("LLM_API_KEY"),
-            "timeout": int(os.getenv("LLM_TIMEOUT", 300))  # Default timeout if not set
+            "timeout": int(os.getenv("LLM_TIMEOUT", 500)),  # Default timeout if not set
+            "temperature": 0.0,
         }
-    ]
+    )
+llm_config = {
+    "config_list": config_list,
 }
+
 executor = DockerCommandLineCodeExecutor(
     image="resistor52/sleuthkit:latest",  # Execute code using the given docker image name.
     timeout=40,  # Timeout for each code execution in seconds.
@@ -55,7 +60,7 @@ task_translation_agent = AssistantAgent(
         Call one tool at a time
             """
     ),
-    llm_config=llm_config,
+    llm_config=config_list[0],
 )
 
 # RAG Proxy Agent setup for command retrieval
@@ -97,7 +102,6 @@ def retrieve_content(
 # Coder Agent setup
 coder_agent = AssistantAgent(
     name="Coder_Writer_Agent",
-    llm_config=llm_config,
     code_execution_config=False,
     human_input_mode="ALWAYS",
     system_message=r"""You are a helpful AI assistant.
@@ -129,6 +133,7 @@ If you are generating a shell script, dont have any blank lines as it gets inter
     ```
     Observation: "Check the output file to confirm all deleted files are listed."
     """,
+    llm_config=config_list[1],
 )
 
 # Create Code Executor Agent
@@ -169,37 +174,6 @@ user_proxy = UserProxyAgent(
 
 )
 
-
-# Create a custom speaker selection function
-def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
-    messages = groupchat.messages
-
-    if len(messages) <= 1:
-        return task_translation_agent
-    #direct all function calls to user_proxy
-    if messages[-1].get("tool_calls") is not None:
-        return user_proxy
-    #direct all function results to task_translation_agent
-    if messages[-1].get("role") == "tool":
-        return task_translation_agent
-
-    else:
-        # Default fallback
-        return "manual"
-
-# Create the GroupChat with agents
-groupchat = GroupChat(
-    agents=[rag_proxy_agent,task_translation_agent, coder_agent, code_executor_agent, reporter_agent, user_proxy],
-    messages=[],
-    max_round=40,
-    speaker_selection_method=custom_speaker_selection_func,
-)
-
-# Initialize GroupChatManager
-manager = GroupChatManager(groupchat=groupchat, llm_config=llm_config)
-
-@task_translation_agent.register_for_llm(description="Used to get the partition information of the disk image. Provides the start, end, length and description of the partitions.")
-@user_proxy.register_for_execution()
 def getImageInfo(image_location:Annotated[str, "Image Location"]) -> str:
     codeMessage = f"""```sh
                     mmls {image_location}
@@ -217,7 +191,7 @@ def getCodeOutput(codeMessage):
 
 register_function(
     get_tool_documentation,
-    caller=task_translation_agent,
+    caller=coder_agent,
     executor=user_proxy,
     name="get_tool_documentation",
     description="Get the documentation for the Sleuth kit command line tool",
@@ -229,6 +203,45 @@ register_function(
     name="retrieve_content",
     description="retrieve content about TSK for code generation and question answering.",
 )
+register_function(
+    getImageInfo,
+    caller=task_translation_agent,
+    executor=user_proxy,
+    name="getImageInfo",
+    description="Get the partition information of the disk image.",
+)
+
+# Create a custom speaker selection function
+def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
+    messages = groupchat.messages
+
+    if len(messages) <= 1:
+        return task_translation_agent
+    #direct all function calls to user_proxy
+    if messages[-1].get("tool_calls") is not None:
+        return user_proxy
+    #direct all function results to the agent that called the tool
+    if messages[-1].get("role") == "tool":
+        caller_agent_name = messages[-2]["name"]
+        #get index from agent_names
+        index = groupchat.agent_names.index(caller_agent_name)
+        #apply that index to agents
+        return groupchat.agents[index]
+    else:
+        # Default fallback
+        return "manual"
+
+# Create the GroupChat with agents
+groupchat = GroupChat(
+    agents=[rag_proxy_agent,task_translation_agent, coder_agent, code_executor_agent, reporter_agent, user_proxy],
+    messages=[],
+    max_round=40,
+    speaker_selection_method=custom_speaker_selection_func,
+)
+
+# Initialize GroupChatManager
+manager = GroupChatManager(groupchat=groupchat, llm_config=llm_config)
+
 
 # Start the conversation by sending a task to the Task Translation Agent
 user_proxy.initiate_chat(
