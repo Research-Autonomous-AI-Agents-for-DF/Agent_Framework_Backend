@@ -1,15 +1,20 @@
 import json
 import os
+import chromadb
+import agentops
 
 from typing import Dict, List
 from autogen import Agent, GroupChat, GroupChatManager, UserProxyAgent, AssistantAgent, register_function
 from autogen.coding import DockerCommandLineCodeExecutor
 from autogen.agentchat.contrib.retrieve_user_proxy_agent import RetrieveUserProxyAgent
-import chromadb
 from dotenv import load_dotenv
 from typing_extensions import Annotated
 from functions import get_tool_documentation, parse_mmls_output
 
+# agentops.init(
+#     api_key='600f3b0c-8959-4193-b38c-ee761888360d',
+#     default_tags=['autogen']
+# )
 
 # Load environment variables from .env file
 load_dotenv()
@@ -21,8 +26,8 @@ for model in os.getenv("LLM_MODEL").split(","):
     config_list.append(
         {
             "model": model,
-            "base_url": os.getenv("LLM_BASE_URL"),
-            "api_key": os.getenv("LLM_API_KEY"),
+            "client_host": os.getenv("LLM_BASE_URL"),
+            "api_type": "ollama",
             "timeout": int(os.getenv("LLM_TIMEOUT", 500)),  # Default timeout if not set
             "temperature": 0.0,
         }
@@ -47,9 +52,11 @@ task_translation_agent = AssistantAgent(
         Break down the task step by step, ensuring each step uses a specific SleuthKit command from the context.
         Output one step at a time think about the result that is given to you and generate the next step.
         
-        To analyze a disk image,
-        1. Identify the offsets for each partition (Suggest using the mmls tool from TSK(The Sleuth Kit)).
-        2. Using the offsets, suggest the most suitable TSK tool from the context to perform the task.
+        To analyze a disk image follow the steps in order,
+        1. Analyze Disk Image Structure (Output: Starting offsets for partitions or 0 if no partition)
+        2. Identify File System Type (Input : offset for the partition, Output: File system type for each partition)
+        3. Discover Deleted Files (Input : file system type and Offset to partition, Output: file names and inode numbers)
+        4. Execute File Recovery (Input : file system type, offset and inode numbers, Output: recovered file)
         
         Use the following structure to solve tasks:
             1. **Thought**: Analyze the task and determine the best SleuthKit commands or sequence to solve it.
@@ -57,7 +64,8 @@ task_translation_agent = AssistantAgent(
             3. **Observation**: I will perform the action. Analyze the results. If further action is needed, continue with the next step.
             
         Important:
-        Call one tool at a time
+        1. Call one tool at a time
+        2. Always follow the steps in order
             """
     ),
     llm_config=config_list[0],
@@ -175,6 +183,7 @@ user_proxy = UserProxyAgent(
 )
 
 def getImageInfo(image_location:Annotated[str, "Image Location"]) -> str:
+    """Identify the partition offsets using mmls and return the results"""
     codeMessage = f"""```sh
                     mmls {image_location}
                     ```"""
@@ -183,26 +192,54 @@ def getImageInfo(image_location:Annotated[str, "Image Location"]) -> str:
     json_output = json.dumps(result, indent=2)
     
     return json_output
+def identifyFileSystem(image_location: Annotated[str, "Image Location"], 
+                      offset: Annotated[str, "Partition Offset"]) -> str:
+    """Identify file system type using fsstat and return the results"""
+    codeMessage = f"""```sh
+                    fsstat -o {offset} {image_location}
+                    ```"""
+    output = getCodeOutput(codeMessage)
+    return output
+
+def listDeletedFiles(image_location: Annotated[str, "Image Location"], 
+                    offset: Annotated[str, "Partition Offset"]) -> str:
+    """List deleted files using fls and return the results"""
+    codeMessage = f"""```sh
+                    fls -d -o {offset} {image_location}
+                    ```"""
+    output = getCodeOutput(codeMessage)
+    return output
+
+def recoverFile(image_location: Annotated[str, "Image Location"], 
+               offset: Annotated[str, "Partition Offset"],
+               inode: Annotated[str, "Inode Number"],
+               output_file: Annotated[str, "Output File Name"]) -> str:
+    """Recover a file using icat based on inode number"""
+    codeMessage = f"""```sh
+                    icat -o {offset} {image_location} {inode} > {output_file}
+                    ```"""
+    output = getCodeOutput(codeMessage)
+    return f"File recovered to {output_file}"
 
 def getCodeOutput(codeMessage):
     code_blocks = executor.code_extractor.extract_code_blocks(message=codeMessage)
     code_output = executor.execute_code_blocks(code_blocks=code_blocks)
     return code_output.output
 
-register_function(
-    get_tool_documentation,
-    caller=coder_agent,
-    executor=user_proxy,
-    name="get_tool_documentation",
-    description="Get the documentation for the Sleuth kit command line tool",
-)
-register_function(
-    retrieve_content,
-    caller=task_translation_agent,
-    executor=user_proxy,
-    name="retrieve_content",
-    description="retrieve content about TSK for code generation and question answering.",
-)
+# register_function(
+#     get_tool_documentation,
+#     caller=coder_agent,
+#     executor=user_proxy,
+#     name="get_tool_documentation",
+#     description="Get the documentation for the Sleuth kit command line tool",
+# )
+# register_function(
+#     retrieve_content,
+#     caller=task_translation_agent,
+#     executor=user_proxy,
+#     name="retrieve_content",
+#     description="retrieve content about TSK for code generation and question answering.",
+# )
 register_function(
     getImageInfo,
     caller=task_translation_agent,
@@ -210,7 +247,29 @@ register_function(
     name="getImageInfo",
     description="Get the partition information of the disk image.",
 )
+register_function(
+    identifyFileSystem,
+    caller=task_translation_agent,
+    executor=user_proxy,
+    name="identifyFileSystem",
+    description="Identify the file system type of a partition.",
+)
 
+register_function(
+    listDeletedFiles,
+    caller=task_translation_agent,
+    executor=user_proxy,
+    name="listDeletedFiles",
+    description="List deleted files in a partition.",
+)
+
+register_function(
+    recoverFile,
+    caller=task_translation_agent,
+    executor=user_proxy,
+    name="recoverFile",
+    description="Recover a file based on its inode number.",
+)
 # Create a custom speaker selection function
 def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
     messages = groupchat.messages
@@ -245,9 +304,6 @@ manager = GroupChatManager(groupchat=groupchat, llm_config=llm_config)
 
 # Start the conversation by sending a task to the Task Translation Agent
 user_proxy.initiate_chat(
-    manager, message="Examine the disk image in the dataset folder of the current working directory named "
-                     "'test_image.dd'"
-                     " using the sleuthkit command line tools. Use the tsk command line tools and come up "
-                     "with a list of deleted file names. Store them in file named 'deleted_files.txt'."
-                     "image_location: ./dataset/test_image.dd "
+    manager, message="""Examine the deleted files in the disk image using the sleuthkit command line tools. Come up with the list of files, the partition they are located and assign a priority to each.    
+image_location: ./dataset/test_image.dd"""
 )
