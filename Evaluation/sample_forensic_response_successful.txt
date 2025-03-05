@@ -1,0 +1,9 @@
+{
+    "messages": [
+        {"role": "user", "content": "Analyze the disk image for deleted files. image_location: ./dataset/test_image.dd"},
+        {"role": "assistant", "content": "Found 3 deleted files in partition 1 (offset 2048): secret.doc (HIGH), temp.txt (MEDIUM), cache.dat (LOW)"}
+    ],
+    "is_correct": true,
+    "correct_ans": "3 files recovered with proper prioritization",
+    "check_result": "PASS"
+}

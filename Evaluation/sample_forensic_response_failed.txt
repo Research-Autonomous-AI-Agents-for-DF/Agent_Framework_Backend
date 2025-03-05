@@ -1,0 +1,9 @@
+{
+    "messages": [
+        {"role": "user", "content": "Analyze the disk image for deleted files. image_location: ./dataset/test_image.dd"},
+        {"role": "assistant", "content": "Error: Unable to locate partition table. Please verify disk image format."}
+    ],
+    "is_correct": false,
+    "correct_ans": "Partition table should be identified",
+    "check_result": "FAIL"
+}

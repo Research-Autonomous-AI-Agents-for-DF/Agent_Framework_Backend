@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Task Success",
+    "description": "Whether the task was completed successfully or not.",
+    "accepted_values": [
+      "SUCCESS",
+      "FAILURE"
+    ],
+    "sub_criteria": []
+  },
+  {
+    "name": "Task Completion Time",
+    "description": "Time taken to complete the task in seconds.",
+    "accepted_values": [
+      ">=0",
+      "<60",
+      ">60"
+    ],
+    "sub_criteria": []
+  },
+  {
+    "name": "Number of Deleted Files Found",
+    "description": "The number of deleted files recovered from the disk image.",
+    "accepted_values": [
+      "EXACT:3",
+      "GREATER_THAN:2",
+      "LESS_THAN:5"
+    ],
+    "sub_criteria": []
+  },
+  {
+    "name": "File Importance Level",
+    "description": "Importance level of the deleted files (HIGH, MEDIUM, LOW).",
+    "accepted_values": [
+      "HIGH",
+      "MEDIUM",
+      "LOW"
+    ],
+    "sub_criteria": []
+  },
+  {
+    "name": "Error Message Presence",
+    "description": "Whether an error message was present during task execution.",
+    "accepted_values": [
+      "PRESENT",
+      "ABSENT"
+    ],
+    "sub_criteria": []
+  }
+]
