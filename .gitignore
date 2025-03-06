@@ -17,3 +17,6 @@ __pycache__/
 coding/
 
 tmp/
+
+.*/
+#ignore all folders starting with .
