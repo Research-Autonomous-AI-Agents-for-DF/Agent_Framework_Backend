@@ -16,7 +16,7 @@ class ChainlitConversableAgent(ConversableAgent):
             res = cl.run_sync(
                 ask_helper(
                     cl.AskActionMessage,
-                    content="Continue or provide feedback?",
+                    content=f'*AI Agent Framework:*\n\nContinue or provide feedback? (Next agent is {self.name})',
                     actions=[
                         cl.Action(
                             name="continue", payload={"value": "continue"}, label="✅ Continue"
@@ -35,6 +35,7 @@ class ChainlitConversableAgent(ConversableAgent):
                 )
             )
             if res.get("payload").get("value") == "continue":
+                cl.run_sync(cl.Message(content=f'Calling {self.name}', author=self.name).send())
                 return ""
             if res.get("payload").get("value") == "exit":
                 return "exit"
