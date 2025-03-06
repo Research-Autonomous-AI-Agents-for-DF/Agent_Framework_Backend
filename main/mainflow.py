@@ -1,6 +1,13 @@
+from chainlit.context import context
+from fastapi import HTTPException, Request
+from chainlit.server import app  # Get the underlying FastAPI app
+from fastapi.responses import FileResponse
+import asyncio
+from logging_config import logger, update_log_file
 import os
 import chromadb
 import chainlit as cl
+import pathlib
 
 from autogen import Agent, GroupChat, register_function
 from autogen.coding import DockerCommandLineCodeExecutor
@@ -10,15 +17,27 @@ from autogen.agentchat.contrib.capabilities import transform_messages, transform
 from chainlit_classes import ChainlitConversableAgent, ChainlitGroupChat, \
     ChainlitGroupChatManager
 from autogen.agentchat.contrib.retrieve_user_proxy_agent import RetrieveUserProxyAgent
+from chainlit.context import CL_RUN_NAMES, context, local_steps
+import threading
+from download_server import run_download_server
 
 # Load environment variables from .env file
 load_dotenv()
 load_dotenv("./.env.local", override=True)
 
+
+logger.info("=== Chainlit + Autogen Logging Initialized ===")
+
+# Start the download server in a separate thread
+download_thread = threading.Thread(target=run_download_server, daemon=True)
+download_thread.start()
+
+print("Download server is running on http://127.0.0.1:8001")
+
 TASK = """Examine the deleted files in the disk image using the sleuthkit command line tools. Come up with the list of files, the partition they are located and assign a priority to each.
 image_location: ./dataset/test_image.dd"""
 
-#Loading cocnfig list
+# Loading cocnfig list
 config_list = []
 
 for model in os.getenv("LLM_MODEL").split(","):
@@ -27,16 +46,18 @@ for model in os.getenv("LLM_MODEL").split(","):
             "model": model,
             "base_url": os.getenv("LLM_BASE_URL"),
             "api_key": os.getenv("LLM_API_KEY"),
-            "timeout": int(os.getenv("LLM_TIMEOUT", 300)),  # Default timeout if not set
+            # Default timeout if not set
+            "timeout": int(os.getenv("LLM_TIMEOUT", 300)),
         }
     )
 llm_config = {
     "config_list": config_list,
 }
 
-#Setting up executor
+# Setting up executor
 executor = DockerCommandLineCodeExecutor(
-    image="resistor52/sleuthkit:latest",  # Execute code using the given docker image name.
+    # Execute code using the given docker image name.
+    image="resistor52/sleuthkit:latest",
     timeout=40,  # Timeout for each code execution in seconds.
     work_dir="coding",  # Use the temporary directory to store the code files.
 )
@@ -53,7 +74,7 @@ task_translation_agent = ChainlitConversableAgent(
 
         To analyze a disk image,
         1. Identify the offsets for each partition (Suggest using the mmls tool from TSK(The Sleuth Kit)).
-        2. Using the offsets, suggest the most suitable TSK tool from the contextto perform the task.
+        2. Using the offsets, suggest the most suitable TSK tool from the context to perform the task.
         
         Use the following structure to solve tasks:
             1. **Thought**: Analyze the task and determine the best SleuthKit commands or sequence to solve it.
@@ -91,7 +112,7 @@ rag_proxy_agent = RetrieveUserProxyAgent(
     name="RAG_Proxy_Agent",
     human_input_mode="NEVER",
     system_message="Retrieve only the most relevant SleuthKit commands and details for solving the user's task. "
-                    "Provide precise commands and their explanations without additional interpretation.",
+    "Provide precise commands and their explanations without additional interpretation.",
     max_consecutive_auto_reply=3,
     retrieve_config={
         "task": "qa",
@@ -111,10 +132,10 @@ rag_proxy_agent = RetrieveUserProxyAgent(
 # Coder Agent setup
 coder_agent = ChainlitConversableAgent(
     name="Coder_Writer_Agent",
-    llm_config=config_list[1],
+    llm_config=config_list[0],
     code_execution_config=False,
     human_input_mode="ALWAYS",
-            system_message="""You are a helpful AI assistant.
+    system_message="""You are a helpful AI assistant.
 I will give you a thought and an action that needs to be completed using a command from the sleuth kit (TSK). Solve tasks using your coding and language skills.
 In the following case, suggest code (in a bash coding block) for the user to execute.
     1. When you need to perform some task with code, use the code to perform the task and output the result. Finish the task smartly.
@@ -144,8 +165,7 @@ context_handling.add_to_agent(coder_agent)
 code_executor_agent = ChainlitConversableAgent(
     name="Code_Executor_Agent",
     code_execution_config={"executor": executor},
-    default_auto_reply=
-    "Please continue. If everything is done, reply 'TERMINATE'.",
+    default_auto_reply="Please continue. If everything is done, reply 'TERMINATE'.",
 )
 # Create Reporter Agent
 reporter_agent = ChainlitConversableAgent(
@@ -212,7 +232,8 @@ def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
 
 # Create the GroupChat with agents
 groupchat = ChainlitGroupChat(
-    agents=[rag_proxy_agent, task_translation_agent, coder_agent, code_executor_agent, reporter_agent, user_proxy],
+    agents=[rag_proxy_agent, task_translation_agent, coder_agent,
+            code_executor_agent, reporter_agent, user_proxy],
     messages=[],
     max_round=40,
     speaker_selection_method=custom_speaker_selection_func,
@@ -247,27 +268,33 @@ def auth_callback(username: str, password: str):
         return None
 @cl.on_chat_start
 async def on_chat_start():
+    logger.info("[CHAINLIT] Chat session started.")
     await cl.Message(
-        content="### 🌟 Welcome to the AI Agent Framework! \n\n"
-                "This tool allows you to interact with AI-driven agents to perform various tasks."
+        content="### 🌟 Welcome to the AI Agent Framework! \n\nThis tool allows you to interact with AI-driven agents to perform various tasks."
     ).send()
-    message = await cl.Message(
-        content="""Loading agents....
-        """
-    ).send()
-    cl.sleep(5)
-    message.content = """Type the task the framework should excecute in the text box below. Follow this format
-        <Your query>
-        image_location: <image location>
-        """
+    message = await cl.Message(content="Loading agents....").send()
+    await cl.sleep(5)
+    message.content = """Type the task the framework should execute in the text box below. Follow this format
+<Your query>
+image_location: <image location>"""
     await message.update()
-    
 @cl.on_message
 async def main(message: cl.Message):
+    # Extract thread info from the Chainlit context.
+    # Adjust cl.context retrieval if needed.
+    chainlit_ctx = cl.context  # or cl.get_context() if that's your API
+    thread_id = chainlit_ctx.session.thread_id
+    logger.info(f"Thread ID: {thread_id}")
+
+    # Update the log file for the current thread.
+    update_log_file(thread_id)
+
+    logger.info(f"[CHAINLIT] Received user message: {message.content}")
     message_content = message.content
-    print(message_content)
+    logger.info(f"[CHAINLIT] Processing user message: {message_content}")
     await cl.make_async(rag_proxy_agent.initiate_chat)(
         manager,
         message=rag_proxy_agent.message_generator,
         problem=message_content
     )
+    logger.info("Finished processing the message")
