@@ -75,16 +75,16 @@ task_translation_agent = ChainlitConversableAgent(
         To analyze a disk image,
         1. Identify the offsets for each partition (Suggest using the mmls tool from TSK(The Sleuth Kit)).
         2. Using the offsets, suggest the most suitable TSK tool from the context to perform the task.
-        
+
         Use the following structure to solve tasks:
             1. **Thought**: Analyze the task and determine the best SleuthKit commands or sequence to solve it.
             2. **Action**: Select the appropriate command(s) and inputs required for the command(s) to use and justify your choice.
             3. **Observation**: I will perform the action. Analyze the results. If further action is needed, continue with the next step.
-            
+
         eg:
         User's question is: What can you tell me about the partitions of the disk image?
         image_location: ./dataset/my_image.dd
-        
+
         Context is:<h1 id="volume-system-tools">Volume System Tools</h1>
         <p>These tools take a disk (or other media) image as input and analyze its partition structures. Examples include DOS
             partitions, BSD disk labels, and the Sun Volume Table of Contents (VTOC). These can be used find hidden data between
@@ -141,7 +141,8 @@ In the following case, suggest code (in a bash coding block) for the user to exe
     1. When you need to perform some task with code, use the code to perform the task and output the result. Finish the task smartly.
 Solve the task step by step if you need to. If a plan is not provided, explain your plan first. Be clear which step uses code, and which step uses your language skill.
 When using code, you must indicate the script type in the code block. The user cannot provide any other feedback or perform any other action beyond executing the code you suggest. The user can't modify your code. So do not suggest incomplete code which requires users to modify. Don't use a code block if it's not intended to be executed by the user.
-If you want the user to save the code in a file before executing it, put # filename: <filename> inside the code block as the first line. Don't include multiple code blocks in one response. Do not ask users to copy and paste the result. Instead, use 'echo' function for the output when relevant. Check the execution result returned by the user.
+# filename: <filename> inside the code block as the first line. Don't include multiple code blocks in one response. Do not ask users to copy and paste the result. Instead, use 'echo' function for the output when relevant. Check the execution result returned by the user.
+If you want the user to save the code in a file before executing it, put
 If the result indicates there is an error, fix the error and output the code again. Suggest the full code instead of partial code or code changes. If the error can't be fixed or if the task is not solved even after the code is executed successfully, analyze the problem, revisit your assumption, collect additional info by asking the user if you need, and think of a different approach to try.
 When you find an answer, verify the answer carefully. Include verifiable evidence in your response if possible.
 
@@ -198,6 +199,8 @@ user_proxy = ChainlitConversableAgent(
 )
 
 # Create a custom speaker selection function
+
+
 def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
     messages = groupchat.messages
 
@@ -230,6 +233,7 @@ def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
         # Default fallback
         return "manual"
 
+
 # Create the GroupChat with agents
 groupchat = ChainlitGroupChat(
     agents=[rag_proxy_agent, task_translation_agent, coder_agent,
@@ -256,6 +260,8 @@ register_function(
 #     name="ask_human_expert",
 #     description="Ask human expert for help in the task"
 # )
+
+
 @cl.password_auth_callback
 def auth_callback(username: str, password: str):
     # Fetch the user matching username from your database
@@ -266,11 +272,36 @@ def auth_callback(username: str, password: str):
         )
     else:
         return None
+
+
 @cl.on_chat_start
 async def on_chat_start():
     logger.info("[CHAINLIT] Chat session started.")
+    # Ask for the case number before starting
     await cl.Message(
         content="### 🌟 Welcome to the AI Agent Framework! \n\nThis tool allows you to interact with AI-driven agents to perform various tasks."
+    ).send()
+    res = await cl.AskUserMessage(
+        content="📝 Please enter the case number for this chat:",
+    ).send()
+
+    case_number = None
+    if res:
+        case_number = res["output"].strip()
+
+    if not case_number:
+        await cl.Message(content="⚠️ A case number is required to start a chat.").send()
+        return
+
+    # Format case number
+    if case_number.isdigit():
+        case_number = f"{int(case_number):02d}"
+
+    # Store the case number in the session
+    cl.user_session.set("case_number", case_number)
+
+    await cl.Message(
+        content=f"✅ Case **{case_number}** recorded. You can now start chatting."
     ).send()
     message = await cl.Message(content="Loading agents....").send()
     await cl.sleep(5)
@@ -278,8 +309,11 @@ async def on_chat_start():
 <Your query>
 image_location: <image location>"""
     await message.update()
+
+
 @cl.on_message
 async def main(message: cl.Message):
+    
     # Extract thread info from the Chainlit context.
     # Adjust cl.context retrieval if needed.
     chainlit_ctx = cl.context  # or cl.get_context() if that's your API
