@@ -19,3 +19,4 @@ coding/
 tmp/
 .chainlit/
 .data/
+session_logs/

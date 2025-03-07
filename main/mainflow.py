@@ -1,3 +1,4 @@
+from typing import Annotated
 from chainlit.context import context
 from fastapi import HTTPException, Request
 from chainlit.server import app  # Get the underlying FastAPI app
@@ -103,7 +104,7 @@ task_translation_agent = ChainlitConversableAgent(
         Please wait for further instructions based on the output of `mmls`.
         """
     ),
-    llm_config=config_list[0],
+    llm_config=config_list[1],
     human_input_mode="ALWAYS"
 )
 
@@ -129,10 +130,23 @@ rag_proxy_agent = RetrieveUserProxyAgent(
     code_execution_config=False,
 )
 
+def retrieve_content(
+        message: Annotated[
+            str,
+            "Refined message which keeps the original meaning and can be used to retrieve content for code generation and question answering.",
+        ],
+        n_results: Annotated[int, "number of results"] = 2,
+    ) -> str:
+        rag_proxy_agent.n_results = n_results
+        rag_proxy_agent.retrieve_docs(problem=message, n_results=n_results)
+        retrieved_docs = rag_proxy_agent._results
+        result = [entry[0]['content'] for entry in retrieved_docs[0]]
+        return result or message
+
 # Coder Agent setup
 coder_agent = ChainlitConversableAgent(
     name="Coder_Writer_Agent",
-    llm_config=config_list[0],
+    llm_config=config_list[1],
     code_execution_config=False,
     human_input_mode="ALWAYS",
     system_message="""You are a helpful AI assistant.
@@ -147,10 +161,10 @@ If the result indicates there is an error, fix the error and output the code aga
 When you find an answer, verify the answer carefully. Include verifiable evidence in your response if possible.
 
 Important
-1. Use one TSK command at a time.
-2. If you are generating a shell script, dont have any blank lines as it gets interpreted as \r in the terminal
+1. Always call get_tool_documentation to get the documentation for a TSK command line tool.
+2. Use one TSK command at a time and that should be the only command in the shell script.
+3. If you are generating a shell script, dont have any blank lines as it gets interpreted as \r in the terminal
 
-Call get_tool_documentation to get the documentation for a TSK command line tool.
 Reply "TERMINATE" in the end when everything is done.
 """
 )
@@ -195,7 +209,7 @@ user_proxy = ChainlitConversableAgent(
     name="Admin",
     system_message="A human admin. Review the outputs from the agents.",
     code_execution_config=False,
-
+    human_input_mode="ALWAYS",
 )
 
 # Create a custom speaker selection function
@@ -206,22 +220,24 @@ def custom_speaker_selection_func(last_speaker: Agent, groupchat: GroupChat):
 
     if last_speaker is rag_proxy_agent:
         return task_translation_agent
-    # direct all function calls to user_proxy
+    #direct all function calls to user_proxy
     if messages[-1].get("tool_calls") is not None:
         return user_proxy
-    # direct all function results to task_translation_agent
+    #direct all function results to the agent that called the tool
     if messages[-1].get("role") == "tool":
-        return coder_agent
-    if last_speaker is task_translation_agent:
-        return coder_agent
-    # elif last_speaker is code_executor_agent:
-    #     # Check if execution was successful or failed
-    #     if "execution failed" in messages[-1]["content"] or "failed" in messages[-1]["content"] or "change" in messages[-1]["content"] or "Error" in messages[-1]["content"]:
-    #         return coder_agent  # Retry with the Coder Agent if failed
+        caller_agent_name = messages[-2]["name"]
+        #get index from agent_names
+        index = groupchat.agent_names.index(caller_agent_name)
+        #apply that index to agents
+        return groupchat.agents[index]
+    elif last_speaker is code_executor_agent:
+        # Check if execution was successful or failed
+        if "execution failed" in messages[-1]["content"] or "failed" in messages[-1]["content"] or "change" in messages[-1]["content"] or "Error" in messages[-1]["content"]:
+            return coder_agent  # Retry with the Coder Agent if failed
 
-    #     # If successful, go back to Task Translation Agent for the next task
-    #     if "execution successful" in messages[-1]["content"] or "success" in messages[-1]["content"] or "succeed" in messages[-1]["content"]:
-    #         return task_translation_agent
+        # If successful, go back to Task Translation Agent for the next task
+        if "execution successful" in messages[-1]["content"] or "success" in messages[-1]["content"] or "succeed" in messages[-1]["content"]:
+            return task_translation_agent
     # elif last_speaker is coder_agent:
     #     # If coder agent is used, go back to Task Translation Agent for the next task
     #     return task_translation_agent
@@ -253,19 +269,15 @@ register_function(
     name="get_tool_documentation",
     description="Get the documentation for the Sleuth kit command line tool",
 )
-# register_function(
-#     ask_human_expert,
-#     caller=task_translation_agent,
-#     executor=user_proxy,
-#     name="ask_human_expert",
-#     description="Ask human expert for help in the task"
-# )
-
-
+register_function(
+    retrieve_content,
+    caller=coder_agent,
+    executor=user_proxy,
+    name="retrieve_content",
+    description="retrieve content about TSK for code generation and question answering.",
+)
 @cl.password_auth_callback
 def auth_callback(username: str, password: str):
-    # Fetch the user matching username from your database
-    # and compare the hashed password with the value stored in the database
     if (username, password) == ("admin", "admin"):
         return cl.User(
             identifier="admin", metadata={"role": "admin", "provider": "credentials"}
@@ -332,3 +344,7 @@ async def main(message: cl.Message):
         problem=message_content
     )
     logger.info("Finished processing the message")
+
+@cl.on_chat_end
+async def end():
+    print("goodbye", cl.user_session.get("id"))
