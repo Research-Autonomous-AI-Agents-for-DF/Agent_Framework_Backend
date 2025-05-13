@@ -20,24 +20,30 @@ from functions import get_tool_documentation, parse_mmls_output
 load_dotenv()
 load_dotenv("./.env.local", override=True)
 
-config_list = []
+# config_list = []
 
-for model in os.getenv("LLM_MODEL").split(","):
-    config_list.append(
-        {
-            "model": model,
-            "client_host": os.getenv("LLM_BASE_URL"),
-            "api_type": "ollama",
-            "timeout": int(os.getenv("LLM_TIMEOUT", 500)),  # Default timeout if not set
-            "temperature": 0.0,
-        }
-    )
+config_list = [{
+    "model": "llama-3.3-70b-versatile",
+    "api_key": os.environ.get("LLM_API_KEY"),
+    "api_type": "groq"
+}]
+# for model in os.getenv("LLM_MODEL").split(","):
+#     config_list.append(
+#         {
+#             "model": model,
+#             "client_host": os.getenv("LLM_BASE_URL"),
+#             "api_type": "ollama",
+#             "timeout": int(os.getenv("LLM_TIMEOUT", 500)),  # Default timeout if not set
+#             "temperature": 0.0,
+#         }
+#     )
+
 llm_config = {
     "config_list": config_list,
 }
 
 executor = DockerCommandLineCodeExecutor(
-    image="resistor52/sleuthkit:latest",  # Execute code using the given docker image name.
+    image="lfaza1/thesleuthkittools:latest",  # Execute code using the given docker image name.
     timeout=40,  # Timeout for each code execution in seconds.
     work_dir="coding",  # Use the temporary directory to store the code files.
 )
@@ -48,25 +54,29 @@ task_translation_agent = AssistantAgent(
     name="Task_Translation_Agent",
     system_message=(
         """You are an expert in The Sleuth Kit (TSK) commands. Your goal is to break down the user's task into smaller actionable steps.
-        DO NOT summarize the context or provide explanations beyond what is needed to complete the task.
-        Break down the task step by step, ensuring each step uses a specific SleuthKit command from the context.
-        Output one step at a time think about the result that is given to you and generate the next step.
-        
-        To analyze a disk image follow the steps in order,
-        1. Analyze Disk Image Structure (Output: Starting offsets for partitions or 0 if no partition)
-        2. Identify File System Type (Input : offset for the partition, Output: File system type for each partition)
-        3. Discover Deleted Files (Input : file system type and Offset to partition, Output: file names and inode numbers)
-        4. Execute File Recovery (Input : file system type, offset and inode numbers, Output: recovered file)
-        
-        Use the following structure to solve tasks:
-            1. **Thought**: Analyze the task and determine the best SleuthKit commands or sequence to solve it.
-            2. **Action**: Select the appropriate command(s) and inputs required for the command(s) to use and justify your choice.
-            3. **Observation**: I will perform the action. Analyze the results. If further action is needed, continue with the next step.
-            
-        Important:
-        1. Call one tool at a time
-        2. Always follow the steps in order
-            """
+               DO NOT summarize the context or provide explanations beyond what is needed to complete the task.
+               Break down the task step by step, ensuring each step uses a specific SleuthKit command or related Linux forensic utility.
+               Output one step at a time. Think about the result that is given to you and generate the next step.
+
+               When performing string search or keyword search in a disk image, follow these steps in order:
+               1. Identify partitions in the disk image (Output: partition offsets)
+               2. Identify file systems for each partition (Input: partition offset)
+               3. Prepare for keyword search (Optional: use fsstat to verify FS type, mount if needed)
+               4. Use `strings`, `grep`, and TSK tools like `fls`, `icat`, `blkls` to locate and extract hits
+               5. Correlate offsets to files using `fls` and check if files are active or deleted
+               6. Analyze or recover files if needed
+
+               Use the following structure to solve tasks:
+                   1. **Thought**: Analyze the task and determine the best SleuthKit commands or sequence to solve it.
+                   2. **Action**: Select the appropriate command(s) and inputs required for the command(s) to use and justify your choice.
+                   3. **Observation**: I will perform the action. Analyze the results. If further action is needed, continue with the next step.
+
+               Important:
+               1. Call one tool at a time
+               2. Always follow the logical order
+               3. Don't give code
+               4. **If command substitution (e.g., $(...)) or loop constructs are required, ensure that the execution environment supports bash.** If the environment uses `sh` by default, suggest breaking complex logic into simpler one-line commands or note the need for bash explicitly.
+               """
     ),
     llm_config=config_list[0],
 )
@@ -114,7 +124,7 @@ coder_agent = AssistantAgent(
     human_input_mode="ALWAYS",
     system_message=r"""You are a helpful AI assistant.
 Solve tasks using your coding and language skills.
-In the following cases, suggest python code (in a python coding block) or shell script (in a sh coding block) for the user to execute.
+In the following cases, suggest  shell script (in a sh coding block) for the user to execute.
     1. When you need to collect info, use the code to output the info you need, for example, browse or search the web, download/read a file, print the content of a webpage or a file, get the current date/time, check the operating system. After sufficient info is printed and the task is ready to be solved based on your language skill, you can solve the task by yourself.
     2. When you need to perform some task with code, use the code to perform the task and output the result. Finish the task smartly.
 Solve the task step by step if you need to. If a plan is not provided, explain your plan first. Be clear which step uses code, and which step uses your language skill.
@@ -141,7 +151,7 @@ If you are generating a shell script, dont have any blank lines as it gets inter
     ```
     Observation: "Check the output file to confirm all deleted files are listed."
     """,
-    llm_config=config_list[1],
+    llm_config=config_list[0],
 )
 
 # Create Code Executor Agent
@@ -304,6 +314,12 @@ manager = GroupChatManager(groupchat=groupchat, llm_config=llm_config)
 
 # Start the conversation by sending a task to the Task Translation Agent
 user_proxy.initiate_chat(
-    manager, message="""Examine the deleted files in the disk image using the sleuthkit command line tools. Come up with the list of files, the partition they are located and assign a priority to each.    
-image_location: ./dataset/test_image.dd"""
+    manager, message="""I am a digital forensic investigator working on a case involving a hard drive that has been imaged and stored at the path {./ss-win-07-25-18.dd}. The task is as follows: {  Find all instances of the word ‘DireWolf’} within the imaged hard drive, and print the text line with mentioning if it is in active files, deleted files and unallocated Space. You just need to print the results for any hits.
+You should output results exactly as in the example below. If the below output is changed, it will be invalid. So make sure to keep the below output format.
+
+<file_offset>,<line_content>,<deleted>
+<file_offset>,<line_content>,<active>
+<file_offset>,<line_content>,<unallocated>
+
+If you cannot find any results, you can print <null>"""
 )
